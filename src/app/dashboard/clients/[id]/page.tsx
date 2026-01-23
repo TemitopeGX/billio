@@ -232,7 +232,7 @@ export default function ClientDetailsPage() {
                       </Link>
                     </td>
                     <td className="py-4 px-6 text-slate-600 font-medium">
-                      {new Date(invoice.dueDate).toLocaleDateString()}
+                      {invoice.dueDate ? new Date(invoice.dueDate).toLocaleDateString() : 'N/A'}
                     </td>
                     <td className="py-4 px-6 text-right font-bold text-slate-900">
                       {formatCurrency(invoice.total)}
