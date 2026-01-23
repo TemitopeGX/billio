@@ -58,7 +58,7 @@ interface PaymentSubmission {
   invoiceFile?: File | null;
 }
 
-export default function ClientPaymentPage() {
+function ClientPaymentContent() {
   const searchParams = useSearchParams();
   const initialInvoiceNumber = searchParams.get('invoice') || '';
 
@@ -469,6 +469,20 @@ export default function ClientPaymentPage() {
           {step === 3 && <SuccessStep />}
         </div>
       </div>
+    </div>
+  );
+}
+
+export default function ClientPaymentPage() {
+  return (
+    <div className="min-h-screen bg-white">
+      <Suspense fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      }>
+        <ClientPaymentContent />
+      </Suspense>
     </div>
   );
 }
