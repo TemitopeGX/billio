@@ -192,7 +192,7 @@ export default function InvoiceDetailsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
             <div className="bg-slate-50 rounded-xl p-6 border border-slate-100 flex flex-col justify-center items-center text-center">
               <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">Total Amount Due</p>
-              <p className="text-4xl font-extrabold text-slate-900 mb-4">{formatCurrency(invoice.total)}</p>
+              <p className="text-4xl font-extrabold text-slate-900 mb-4">{formatCurrency(invoice.total || 0)}</p>
               <div>{getStatusBadge(invoice.status)}</div>
             </div>
 
@@ -250,19 +250,19 @@ export default function InvoiceDetailsPage() {
             <div className="w-full md:w-1/3 space-y-3">
               <div className="flex justify-between text-sm text-slate-600">
                 <span>Subtotal</span>
-                <span className="font-medium">{formatCurrency(invoice.subtotal)}</span>
+                <span className="font-medium">{formatCurrency(invoice.subtotal || 0)}</span>
               </div>
               <div className="flex justify-between text-sm text-slate-600">
                 <span>Tax</span>
-                <span className="font-medium">{formatCurrency(invoice.tax)}</span>
+                <span className="font-medium">{formatCurrency(invoice.tax || 0)}</span>
               </div>
               <div className="flex justify-between text-sm text-slate-600">
                 <span>Discount</span>
-                <span className="font-medium text-red-600">-{formatCurrency(invoice.discount)}</span>
+                <span className="font-medium text-red-600">-{formatCurrency(invoice.discount || 0)}</span>
               </div>
               <div className="border-t border-slate-200 pt-3 mt-3 flex justify-between items-center">
                 <span className="font-bold text-slate-900">Total</span>
-                <span className="text-xl font-bold text-slate-900">{formatCurrency(invoice.total)}</span>
+                <span className="text-xl font-bold text-slate-900">{formatCurrency(invoice.total || 0)}</span>
               </div>
             </div>
           </div>

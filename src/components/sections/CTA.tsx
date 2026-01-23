@@ -11,21 +11,21 @@ if (typeof window !== "undefined") {
 }
 
 export default function CTA() {
-  const sectionRef = useRef(null);
-  const contentRef = useRef(null);
-  const featuresRef = useRef([]);
+  const sectionRef = useRef<HTMLElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const featuresRef = useRef<HTMLElement[]>([]);
 
   useEffect(() => {
     if (!sectionRef.current) return;
 
     // Content animation
     if (contentRef.current) {
-      gsap.fromTo(contentRef.current.children, 
+      gsap.fromTo(contentRef.current.children,
         { y: 50, opacity: 0 },
-        { 
-          y: 0, 
-          opacity: 1, 
-          duration: 1.2, 
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.2,
           stagger: 0.2,
           ease: "power3.out",
           scrollTrigger: {
@@ -42,17 +42,17 @@ export default function CTA() {
     featuresRef.current.forEach((feature, index) => {
       if (!feature) return;
 
-      gsap.fromTo(feature, 
-        { 
-          y: 30, 
-          opacity: 0, 
+      gsap.fromTo(feature,
+        {
+          y: 30,
+          opacity: 0,
           scale: 0.9
         },
-        { 
-          y: 0, 
-          opacity: 1, 
+        {
+          y: 0,
+          opacity: 1,
           scale: 1,
-          duration: 0.8, 
+          duration: 0.8,
           delay: index * 0.1,
           ease: "back.out(1.7)",
           scrollTrigger: {
@@ -100,7 +100,7 @@ export default function CTA() {
         <div className="absolute top-20 left-10 w-72 h-72 bg-card rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
         <div className="absolute bottom-20 right-10 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse animation-delay-4000"></div>
-        
+
         {/* Grid Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-full h-full" style={{
@@ -109,7 +109,7 @@ export default function CTA() {
           }}></div>
         </div>
       </div>
-      
+
       <div className="max-w-4xl mx-auto text-center relative z-10">
         {/* Main Content */}
         <div ref={contentRef} className="text-white mb-16">
@@ -117,7 +117,7 @@ export default function CTA() {
             <Zap className="h-4 w-4" />
             Ready to Get Started?
           </div>
-          
+
           <h2 className="text-5xl md:text-6xl font-black mb-6 leading-tight">
             <span className="bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
               Ready to get paid
@@ -126,7 +126,7 @@ export default function CTA() {
               faster?
             </span>
           </h2>
-          
+
           <p className="text-xl text-blue-100 max-w-2xl mx-auto mb-8 leading-relaxed">
             Join thousands of businesses already using Billio to streamline their invoicing and get paid faster than ever.
           </p>
