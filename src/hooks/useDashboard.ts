@@ -77,34 +77,39 @@ export const useDashboardActivity = () => {
 };
 
 export const useRevenueTrend = (days: number = 7) => {
-  // If requesting standard 7 days, use bundled data
-  if (days === 7) {
-    const query = useDashboardAll();
-    return { ...query, data: query.data?.revenueTrend as RevenueTrendData[] };
-  }
-  // Otherwise fetch specific
-  return useQuery<RevenueTrendData[], Error>({
+  const bundledQuery = useDashboardAll();
+
+  const specificQuery = useQuery<RevenueTrendData[], Error>({
     queryKey: ['revenue-trend', days],
     queryFn: async () => {
       const { data } = await api.get(`/dashboard/revenue-trend?days=${days}`);
       return data.data;
     },
+    enabled: days !== 7,
   });
+
+  if (days === 7) {
+    return { ...bundledQuery, data: bundledQuery.data?.revenueTrend as RevenueTrendData[] };
+  }
+  return specificQuery;
 };
 
 export const useTopClients = (limit: number = 5) => {
-  // If requesting standard limit 5, use bundled data
-  if (limit === 5) {
-    const query = useDashboardAll();
-    return { ...query, data: query.data?.topClients as TopClient[] };
-  }
-  return useQuery<TopClient[], Error>({
+  const bundledQuery = useDashboardAll();
+
+  const specificQuery = useQuery<TopClient[], Error>({
     queryKey: ['top-clients', limit],
     queryFn: async () => {
       const { data } = await api.get(`/dashboard/top-clients?limit=${limit}`);
       return data.data;
     },
+    enabled: limit !== 5,
   });
+
+  if (limit === 5) {
+    return { ...bundledQuery, data: bundledQuery.data?.topClients as TopClient[] };
+  }
+  return specificQuery;
 };
 
 export const useQuarterlyPerformance = () => {

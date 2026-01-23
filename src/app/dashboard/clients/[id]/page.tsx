@@ -63,9 +63,10 @@ export default function ClientDetailsPage() {
 
         // Handle both response formats: direct client data or nested under data.client
         const clientData = clientResponse.data.data?.client || clientResponse.data;
-        let rawInvoices = invoicesResponse.data.data?.invoices || invoicesResponse.data;
+        const rawInvoices = invoicesResponse.data.data?.invoices || invoicesResponse.data;
 
         // Normalize invoice data
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const normalizedInvoices = (Array.isArray(rawInvoices) ? rawInvoices : []).map((inv: any) => ({
           ...inv,
           dueDate: inv.dueAt || inv.dueDate,
