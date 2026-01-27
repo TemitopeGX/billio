@@ -10,6 +10,9 @@ const outfit = Outfit({ subsets: ["latin"] });
 export const metadata: Metadata = {
     title: "Billio - Modern Invoicing for SaaS",
     description: "Automated invoicing, payments, and financial tracking for modern businesses.",
+    appleWebApp: {
+        title: "Billio.",
+    },
 };
 
 export default function RootLayout({
