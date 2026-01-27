@@ -6,6 +6,8 @@ export interface DashboardStats {
   invoicesSent: number;
   activeClients: number;
   outstanding: number;
+  companyName?: string;
+  companyLogo?: string;
 }
 
 export interface DashboardInvoice {
