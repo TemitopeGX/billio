@@ -60,6 +60,8 @@ import {
   TrendingUp
 } from "lucide-react";
 import { useInvoices } from "@/hooks/useInvoices";
+import { InvoicesPageSkeleton } from "@/components/skeletons/page-skeletons";
+import { EmptyState } from "@/components/ui/empty-state";
 
 const getStatusBadge = (status: string) => {
   switch (status?.toLowerCase()) {
@@ -114,6 +116,31 @@ export default function InvoicesPage() {
     const matchesStatus = statusFilter === "all" || status === statusFilter;
     return matchesSearch && matchesStatus;
   });
+
+  // Show skeleton loader while loading
+  if (isLoading) {
+    return <InvoicesPageSkeleton />;
+  }
+
+  // Show empty state when no invoices exist
+  if (!isLoading && invoices.length === 0) {
+    return (
+      <div className="p-0 space-y-8 max-w-[100rem] mx-auto">
+        <div>
+          <h1 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">Invoices</h1>
+          <p className="text-slate-500 text-lg">Manage and track all your invoices in one place.</p>
+        </div>
+
+        <EmptyState
+          icon={FileText}
+          title="No invoices yet"
+          description="Start creating professional invoices for your clients. Track payments, send reminders, and get paid faster."
+          actionLabel="Create Your First Invoice"
+          onAction={() => window.location.href = '/dashboard/invoices/new'}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="p-0 space-y-8 max-w-[100rem] mx-auto">
@@ -252,12 +279,7 @@ export default function InvoicesPage() {
           </div>
         </div>
         <div className="p-0">
-          {isLoading ? (
-            <div className="py-16 text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-slate-900 mx-auto mb-4"></div>
-              <p className="text-slate-500">Loading invoices...</p>
-            </div>
-          ) : isError ? (
+          {isError ? (
             <div className="py-16 text-center">
               <div className="p-4 bg-red-50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <AlertTriangle className="h-8 w-8 text-red-500" />
@@ -266,18 +288,17 @@ export default function InvoicesPage() {
               <p className="text-slate-500 text-sm mt-1">Please try again later</p>
             </div>
           ) : filteredInvoices.length === 0 ? (
-            <div className="py-16 text-center">
-              <div className="p-4 bg-slate-50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <FileText className="h-8 w-8 text-slate-400" />
-              </div>
-              <p className="text-slate-900 font-bold">No invoices found</p>
-              <p className="text-slate-500 text-sm mt-1">Create your first invoice to get started</p>
-              <Link href="/dashboard/invoices/new" className="mt-6 inline-block">
-                <Button className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-8 py-3 font-bold">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Create Invoice
-                </Button>
-              </Link>
+            <div className="py-16">
+              <EmptyState
+                icon={Search}
+                title="No invoices match your search"
+                description="Try adjusting your filters or search terms to find what you're looking for."
+                actionLabel="Clear Filters"
+                onAction={() => {
+                  setSearchTerm('');
+                  setStatusFilter('all');
+                }}
+              />
             </div>
           ) : (
             <div className="overflow-x-auto">

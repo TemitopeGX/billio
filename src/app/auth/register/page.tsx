@@ -20,8 +20,7 @@ function RegisterContent() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
     phone: "",
     password: "",
@@ -38,7 +37,7 @@ function RegisterContent() {
   };
 
   const validateForm = () => {
-    if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone || !formData.password) {
+    if (!formData.name || !formData.email || !formData.phone || !formData.password) {
       toast.error("Please fill in all required fields");
       return false;
     }
@@ -70,8 +69,7 @@ function RegisterContent() {
       }
 
       const registrationData = {
-        firstName: formData.firstName.trim(),
-        lastName: formData.lastName.trim(),
+        name: formData.name.trim(),
         email: formData.email.trim().toLowerCase(),
         phone: formData.phone.trim(),
         password: formData.password
@@ -146,29 +144,16 @@ function RegisterContent() {
         </CardHeader>
         <CardContent className="px-8 pb-10">
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="firstName" className="text-sm font-semibold text-slate-700">First name</Label>
-                <Input
-                  id="firstName"
-                  placeholder="Enter first name"
-                  required
-                  className="h-12 rounded-xl bg-white border-slate-200 focus:border-slate-900 focus:ring-0 text-slate-900 placeholder:text-slate-400"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="lastName" className="text-sm font-semibold text-slate-700">Last name</Label>
-                <Input
-                  id="lastName"
-                  placeholder="Enter last name"
-                  required
-                  className="h-12 rounded-xl bg-white border-slate-200 focus:border-slate-900 focus:ring-0 text-slate-900 placeholder:text-slate-400"
-                  value={formData.lastName}
-                  onChange={handleInputChange}
-                />
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="name" className="text-sm font-semibold text-slate-700">Full name</Label>
+              <Input
+                id="name"
+                placeholder="Enter your full name"
+                required
+                className="h-12 rounded-xl bg-white border-slate-200 focus:border-slate-900 focus:ring-0 text-slate-900 placeholder:text-slate-400"
+                value={formData.name}
+                onChange={handleInputChange}
+              />
             </div>
 
             <div className="space-y-2">

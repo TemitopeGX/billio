@@ -47,6 +47,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useDashboardStats, useDashboardInvoices, useDashboardActivity, useRevenueTrend, useTopClients, useQuarterlyPerformance } from "@/hooks/useDashboard";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, BarChart, Bar } from "recharts";
+import { EmptyState } from "@/components/ui/empty-state";
+import { OnboardingWelcome, QuickStartChecklist } from "@/components/onboarding/onboarding-welcome";
 
 const getStatusBadge = (status: string) => {
   switch (status) {
@@ -111,12 +113,14 @@ const getTimeAgo = (dateString?: string) => {
 export default function DashboardPage() {
   const router = useRouter();
   const [showPlanModal, setShowPlanModal] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [isNewUser, setIsNewUser] = useState(false);
 
   const { data: stats, isLoading: statsLoading, error: statsError } = useDashboardStats();
   const { data: recentInvoices, isLoading: invoicesLoading, error: invoicesError } = useDashboardInvoices();
   const { data: recentActivity, isLoading: activityLoading, error: activityError } = useDashboardActivity();
   const { data: revenueTrend, isLoading: trendLoading, error: trendError } = useRevenueTrend(7);
-  const { data: topClients, isLoading: clientsLoading, error: clientsError } = useTopClients(3);
+
   const { data: quarterlyData, isLoading: quarterlyLoading, error: quarterlyError } = useQuarterlyPerformance();
 
   useEffect(() => {
@@ -132,6 +136,20 @@ export default function DashboardPage() {
       }
     }
   }, []);
+
+  // Check if user is new and should see onboarding
+  useEffect(() => {
+    const hasCompletedOnboarding = localStorage.getItem('onboarding_completed');
+    const hasData = stats && (stats.invoicesSent > 0 || stats.activeClients > 0);
+
+    setIsNewUser(!hasData);
+    setShowOnboarding(!hasCompletedOnboarding && !hasData);
+  }, [stats]);
+
+  const handleDismissOnboarding = () => {
+    setShowOnboarding(false);
+    localStorage.setItem('onboarding_completed', 'true');
+  };
 
   const handleProceedToSubscription = () => {
     localStorage.removeItem('intendedPlan');
@@ -229,7 +247,19 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-slate-50">
+      {/* Onboarding Modal */}
+      {showOnboarding && <OnboardingWelcome />}
+
       <div className="max-w-[100rem] mx-auto p-0 space-y-8">
+        {/* Quick Start Checklist for new users */}
+        {isNewUser && !showOnboarding && (
+          <QuickStartChecklist
+            hasClients={currentStats.activeClients > 0}
+            hasInvoices={currentStats.invoicesSent > 0}
+            hasCompanyInfo={!!stats?.companyName || !!stats?.companyLogo}
+          />
+        )}
+
         {/* Welcome Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">Welcome back!</h1>
@@ -375,9 +405,12 @@ export default function DashboardPage() {
                     </div>
                   ))
                 ) : (
-                  <div className="text-center py-8 text-slate-400">
-                    <p className="text-sm">No recent activity</p>
-                  </div>
+                  <EmptyState
+                    icon={Activity}
+                    title="No recent activity"
+                    description="Your business activity will appear here as you create invoices, add clients, and receive payments."
+                    className="py-8"
+                  />
                 )}
               </div>
             </div>
@@ -431,14 +464,13 @@ export default function DashboardPage() {
               </Table>
             </div>
           ) : (
-            <div className="text-center py-12">
-              <p className="text-slate-500 mb-4">No invoices yet</p>
-              <Link href="/dashboard/invoices/new">
-                <Button className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-6 py-3 font-bold">
-                  Create First Invoice
-                </Button>
-              </Link>
-            </div>
+            <EmptyState
+              icon={FileText}
+              title="No invoices yet"
+              description="Create your first invoice to start tracking your business revenue and get paid faster."
+              actionLabel="Create Invoice"
+              onAction={() => router.push('/dashboard/invoices/new')}
+            />
           )}
         </div>
 

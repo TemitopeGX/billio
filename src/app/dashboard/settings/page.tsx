@@ -33,9 +33,7 @@ import {
 } from "lucide-react";
 import api from "@/lib/api";
 import { useAuth } from "@/contexts/auth-context";
-import { useProfile } from "@/hooks/useProfile";
 import { useTheme } from "@/contexts/theme-context";
-import { useNotificationSettings } from "@/hooks/useNotificationSettings";
 import { SettingsPageSkeleton } from "@/components/skeletons/page-skeletons";
 
 interface CompanySettings {
@@ -77,17 +75,15 @@ interface Plan {
 
 interface Subscription {
   id: string;
-  planId: string;
+  plan_id: string;
   status: string;
-  currentPeriodStart: string;
-  currentPeriodEnd: string;
-  cancelAtPeriodEnd?: boolean;
+  current_period_end: string;
   plan: Plan;
   trial_ends_at?: string;
   canceled_at?: string;
   auto_renew?: boolean;
   paystack_subscription_code?: string;
-  stripeSubscriptionId?: string;
+  stripe_subscription_id?: string;
 }
 
 interface UsageStats {
@@ -106,19 +102,25 @@ interface UsageStats {
   };
 }
 
+interface NotificationSettings {
+  email: boolean;
+  push: boolean;
+  invoiceReminders: boolean;
+  paymentAlerts: boolean;
+  invoiceCreated: boolean;
+  invoiceUpdated: boolean;
+  paymentReceived: boolean;
+  paymentUpdated: boolean;
+  clientCreated: boolean;
+  clientUpdated: boolean;
+}
+
 // ... types
 type PaymentGateway = 'stripe' | 'paystack';
 
 export default function SettingsPage() {
   const { user } = useAuth();
-  const { profile, updateProfile } = useProfile();
-
-  const {
-    settings: notificationSettings,
-    isLoading: notificationSettingsLoading,
-    updateSetting: updateNotificationSetting,
-    isUpdating: isUpdatingNotifications
-  } = useNotificationSettings();
+  /* Removed duplicate hooks useProfile and useNotificationSettings to optimize API calls */
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -144,6 +146,22 @@ export default function SettingsPage() {
     address: "",
     avatar: null
   });
+
+  // Manage notification settings locally
+  const [notificationSettings, setNotificationSettings] = useState<NotificationSettings>({
+    email: true,
+    push: true,
+    invoiceReminders: true,
+    paymentAlerts: true,
+    invoiceCreated: true,
+    invoiceUpdated: true,
+    paymentReceived: true,
+    paymentUpdated: true,
+    clientCreated: true,
+    clientUpdated: true,
+  });
+
+  const [isUpdatingNotifications, setIsUpdatingNotifications] = useState(false);
 
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
 
@@ -192,7 +210,12 @@ export default function SettingsPage() {
         })
         .catch((err) => {
           console.error('Verify failed:', err);
-          // Try refreshing anyway
+          console.error('Error response:', err.response?.data);
+
+          const errorMessage = err.response?.data?.message || err.response?.data?.error || 'Verification failed';
+          toast.error(errorMessage);
+
+          // Try refreshing anyway in case the webhook already processed it
           setTimeout(() => refreshSubscription(), 1000);
         });
     } else if (success === 'true') {
@@ -227,17 +250,12 @@ export default function SettingsPage() {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        // Fetch all data in parallel for faster loading
-        const [companyResponse, profileResponse, subRes, plansRes, usageRes] = await Promise.all([
-          api.get("/users/settings/company"),
-          api.get("/users/profile"),
-          api.get('/subscriptions/me').catch(() => ({ data: { success: false } })),
-          api.get('/subscriptions/plans').catch(() => ({ data: { success: false } })),
-          api.get('/subscriptions/usage').catch(() => ({ data: { success: false } }))
-        ]);
+        // Fetch ALL data in a single request - including billing
+        const settingsResponse = await api.get("/users/settings/all");
+        const allSettings = settingsResponse.data?.data;
 
         // Process company settings
-        const companyData = companyResponse.data?.data?.settings || companyResponse.data?.settings;
+        const companyData = allSettings?.company?.settings;
         if (companyData) {
           setCompanySettings(prev => ({
             ...prev,
@@ -252,7 +270,7 @@ export default function SettingsPage() {
         }
 
         // Process user profile
-        const profileData = profileResponse.data?.data?.user || profileResponse.data?.user;
+        const profileData = allSettings?.profile?.user;
         if (profileData) {
           setProfileSettings(prev => ({
             ...prev,
@@ -263,22 +281,29 @@ export default function SettingsPage() {
           }));
         }
 
+        // Process notification settings
+        const notifData = allSettings?.notifications?.settings;
+        if (notifData) {
+          setNotificationSettings((prev: NotificationSettings) => ({ ...prev, ...notifData }));
+        }
+
+        // Process billing data
+        const billingData = allSettings?.billing;
+        if (billingData?.subscription) {
+          setSubscription(billingData.subscription);
+        }
+        if (billingData?.plans) {
+          setPlans(billingData.plans);
+        }
+        if (billingData?.usage) {
+          setUsageStats(billingData.usage);
+        }
+
         // Load app settings from localStorage
         setAppSettings(prev => ({
           ...prev,
           theme: 'light'
         }));
-
-        // Process subscription data
-        if (subRes.data.success && subRes.data.data.subscription) {
-          setSubscription(subRes.data.data.subscription);
-        }
-        if (plansRes.data.success && plansRes.data.data.plans) {
-          setPlans(plansRes.data.data.plans);
-        }
-        if (usageRes.data.success && usageRes.data.data) {
-          setUsageStats(usageRes.data.data);
-        }
 
       } catch (error) {
         console.error("Error fetching settings:", error);
@@ -359,8 +384,25 @@ export default function SettingsPage() {
     }, 100);
   };
 
-  const handleNotificationChange = (field: keyof typeof notificationSettings | string, value: boolean) => {
-    updateNotificationSetting(field as any, value);
+  const handleNotificationToggle = async (key: keyof typeof notificationSettings) => {
+    // Optimistic update
+    const previousSettings = { ...notificationSettings };
+    const newSettings = { ...notificationSettings, [key]: !notificationSettings[key] };
+
+    setNotificationSettings(newSettings);
+    setIsUpdatingNotifications(true);
+
+    try {
+      await api.put('/notifications/settings', newSettings);
+      toast.success('Settings updated');
+    } catch (error) {
+      console.error('Failed to update notification setting:', error);
+      // Revert on failure
+      setNotificationSettings(previousSettings);
+      toast.error('Failed to update setting');
+    } finally {
+      setIsUpdatingNotifications(false);
+    }
   };
 
 
@@ -468,19 +510,7 @@ export default function SettingsPage() {
         setProfileSettings(updatedProfile);
       }
 
-      const userData = response.data?.data?.user || response.data?.user;
-      if (userData) {
-        updateProfile({
-          id: userData.id,
-          name: userData.name,
-          email: userData.email,
-          phone: userData.phone,
-          address: userData.address,
-          avatar: userData.avatar,
-          createdAt: userData.createdAt,
-          updatedAt: userData.updatedAt
-        });
-      }
+      // Profile updated successfully - no need to call updateProfile as we manage state locally
 
       toast.success("Profile updated successfully");
     } catch (error) {
@@ -505,18 +535,7 @@ export default function SettingsPage() {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="p-8 space-y-8">
-        <div className="flex items-center justify-center h-64">
-          <div className="flex items-center space-x-2">
-            <Loader2 className="h-6 w-6 animate-spin text-slate-900" />
-            <span className="text-slate-500 font-medium">Loading settings...</span>
-          </div>
-        </div>
-      </div>
-    );
-  }
+
 
   const tabs = [
     { id: 'profile', label: 'Profile', icon: User },
@@ -1036,156 +1055,148 @@ export default function SettingsPage() {
                 </div>
               </CardHeader>
               <CardContent className="pt-6">
-                {notificationSettingsLoading ? (
-                  <div className="flex items-center justify-center py-8">
-                    <div className="flex items-center space-x-2">
-                      <Loader2 className="h-6 w-6 animate-spin text-slate-900" />
-                      <span className="text-slate-500 font-medium">Loading notification settings...</span>
+                <div className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl">
+                      <div>
+                        <Label className="text-sm font-bold text-slate-900">Email Notifications</Label>
+                        <p className="text-sm text-slate-500">Receive notifications via email</p>
+                      </div>
+                      <Switch
+                        checked={notificationSettings.email}
+                        onCheckedChange={() => handleNotificationToggle('email')}
+                        disabled={isUpdatingNotifications}
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl">
+                      <div>
+                        <Label className="text-sm font-bold text-slate-900">Push Notifications</Label>
+                        <p className="text-sm text-slate-500">Receive push notifications in your browser</p>
+                      </div>
+                      <Switch
+                        checked={notificationSettings.push}
+                        onCheckedChange={() => handleNotificationToggle('push')}
+                        disabled={isUpdatingNotifications}
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl">
+                      <div>
+                        <Label className="text-sm font-bold text-slate-900">Invoice Reminders</Label>
+                        <p className="text-sm text-slate-500">Get reminded about overdue invoices</p>
+                      </div>
+                      <Switch
+                        checked={notificationSettings.invoiceReminders}
+                        onCheckedChange={() => handleNotificationToggle('invoiceReminders')}
+                        disabled={isUpdatingNotifications}
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl">
+                      <div>
+                        <Label className="text-sm font-bold text-slate-900">Payment Alerts</Label>
+                        <p className="text-sm text-slate-500">Get notified when payments are received</p>
+                      </div>
+                      <Switch
+                        checked={notificationSettings.paymentAlerts}
+                        onCheckedChange={() => handleNotificationToggle('paymentAlerts')}
+                        disabled={isUpdatingNotifications}
+                      />
                     </div>
                   </div>
-                ) : (
-                  <div className="space-y-6">
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl">
+
+                  <Separator className="bg-slate-100" />
+
+                  <div className="space-y-4">
+                    <h4 className="text-sm font-bold text-slate-900">Activity Notifications</h4>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl">
                         <div>
-                          <Label className="text-sm font-bold text-slate-900">Email Notifications</Label>
-                          <p className="text-sm text-slate-500">Receive notifications via email</p>
+                          <Label className="text-sm font-medium text-slate-900">Invoice Created</Label>
                         </div>
                         <Switch
-                          checked={notificationSettings.email}
-                          onCheckedChange={(checked) => handleNotificationChange('email', checked)}
+                          checked={notificationSettings.invoiceCreated}
+                          onCheckedChange={() => handleNotificationToggle('invoiceCreated')}
                           disabled={isUpdatingNotifications}
                         />
                       </div>
 
-                      <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl">
+                      <div className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl">
                         <div>
-                          <Label className="text-sm font-bold text-slate-900">Push Notifications</Label>
-                          <p className="text-sm text-slate-500">Receive push notifications in your browser</p>
+                          <Label className="text-sm font-medium text-slate-900">Invoice Updated</Label>
                         </div>
                         <Switch
-                          checked={notificationSettings.push}
-                          onCheckedChange={(checked) => handleNotificationChange('push', checked)}
+                          checked={notificationSettings.invoiceUpdated}
+                          onCheckedChange={() => handleNotificationToggle('invoiceUpdated')}
                           disabled={isUpdatingNotifications}
                         />
                       </div>
 
-                      <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl">
+                      <div className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl">
                         <div>
-                          <Label className="text-sm font-bold text-slate-900">Invoice Reminders</Label>
-                          <p className="text-sm text-slate-500">Get reminded about overdue invoices</p>
+                          <Label className="text-sm font-medium text-slate-900">Payment Received</Label>
                         </div>
                         <Switch
-                          checked={notificationSettings.invoiceReminders}
-                          onCheckedChange={(checked) => handleNotificationChange('invoiceReminders', checked)}
+                          checked={notificationSettings.paymentReceived}
+                          onCheckedChange={() => handleNotificationToggle('paymentReceived')}
                           disabled={isUpdatingNotifications}
                         />
                       </div>
 
-                      <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl">
+                      <div className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl">
                         <div>
-                          <Label className="text-sm font-bold text-slate-900">Payment Alerts</Label>
-                          <p className="text-sm text-slate-500">Get notified when payments are received</p>
+                          <Label className="text-sm font-medium text-slate-900">Payment Updated</Label>
                         </div>
                         <Switch
-                          checked={notificationSettings.paymentAlerts}
-                          onCheckedChange={(checked) => handleNotificationChange('paymentAlerts', checked)}
+                          checked={notificationSettings.paymentUpdated}
+                          onCheckedChange={() => handleNotificationToggle('paymentUpdated')}
+
                           disabled={isUpdatingNotifications}
                         />
                       </div>
-                    </div>
 
-                    <Separator className="bg-slate-100" />
-
-                    <div className="space-y-4">
-                      <h4 className="text-sm font-bold text-slate-900">Activity Notifications</h4>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl">
-                          <div>
-                            <Label className="text-sm font-medium text-slate-900">Invoice Created</Label>
-                          </div>
-                          <Switch
-                            checked={notificationSettings.invoiceCreated}
-                            onCheckedChange={(checked) => handleNotificationChange('invoiceCreated', checked)}
-                            disabled={isUpdatingNotifications}
-                          />
+                      <div className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl">
+                        <div>
+                          <Label className="text-sm font-medium text-slate-900">Client Created</Label>
                         </div>
-
-                        <div className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl">
-                          <div>
-                            <Label className="text-sm font-medium text-slate-900">Invoice Updated</Label>
-                          </div>
-                          <Switch
-                            checked={notificationSettings.invoiceUpdated}
-                            onCheckedChange={(checked) => handleNotificationChange('invoiceUpdated', checked)}
-                            disabled={isUpdatingNotifications}
-                          />
-                        </div>
-
-                        <div className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl">
-                          <div>
-                            <Label className="text-sm font-medium text-slate-900">Payment Received</Label>
-                          </div>
-                          <Switch
-                            checked={notificationSettings.paymentReceived}
-                            onCheckedChange={(checked) => handleNotificationChange('paymentReceived', checked)}
-                            disabled={isUpdatingNotifications}
-                          />
-                        </div>
-
-                        <div className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl">
-                          <div>
-                            <Label className="text-sm font-medium text-slate-900">Payment Updated</Label>
-                          </div>
-                          <Switch
-                            checked={notificationSettings.paymentUpdated}
-                            onCheckedChange={(checked) => handleNotificationChange('paymentUpdated', checked)}
-                            disabled={isUpdatingNotifications}
-                          />
-                        </div>
-
-                        <div className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl">
-                          <div>
-                            <Label className="text-sm font-medium text-slate-900">Client Created</Label>
-                          </div>
-                          <Switch
-                            checked={notificationSettings.clientCreated}
-                            onCheckedChange={(checked) => handleNotificationChange('clientCreated', checked)}
-                            disabled={isUpdatingNotifications}
-                          />
-                        </div>
-
-                        <div className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl">
-                          <div>
-                            <Label className="text-sm font-medium text-slate-900">Client Updated</Label>
-                          </div>
-                          <Switch
-                            checked={notificationSettings.clientUpdated}
-                            onCheckedChange={(checked) => handleNotificationChange('clientUpdated', checked)}
-                            disabled={isUpdatingNotifications}
-                          />
-                        </div>
+                        <Switch
+                          checked={notificationSettings.clientCreated}
+                          onCheckedChange={() => handleNotificationToggle('clientCreated')}
+                          disabled={isUpdatingNotifications}
+                        />
                       </div>
-                    </div>
 
-                    <div className="flex justify-between items-center pt-6 border-t border-slate-100">
-                      <div className="text-sm font-medium">
-                        {isUpdatingNotifications && (
-                          <div className="flex items-center text-slate-500">
-                            <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                            Saving notification settings...
-                          </div>
-                        )}
-                        {!isUpdatingNotifications && (
-                          <div className="flex items-center text-emerald-600">
-                            <span>✓ Notification settings are saved automatically</span>
-                          </div>
-                        )}
+                      <div className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl">
+                        <div>
+                          <Label className="text-sm font-medium text-slate-900">Client Updated</Label>
+                        </div>
+                        <Switch
+                          checked={notificationSettings.clientUpdated}
+                          onCheckedChange={() => handleNotificationToggle('clientUpdated')}
+                          disabled={isUpdatingNotifications}
+                        />
                       </div>
                     </div>
                   </div>
-                )}
+
+                  <div className="flex justify-between items-center pt-6 border-t border-slate-100">
+                    <div className="text-sm font-medium">
+                      {isUpdatingNotifications && (
+                        <div className="flex items-center text-slate-500">
+                          <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                          Saving notification settings...
+                        </div>
+                      )}
+                      {!isUpdatingNotifications && (
+                        <div className="flex items-center text-emerald-600">
+                          <span>✓ Notification settings are saved automatically</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           )}
@@ -1229,7 +1240,7 @@ export default function SettingsPage() {
                         <div className="flex flex-col gap-2">
                           {subscription?.status === 'active' ? (
                             <div>
-                              {(subscription?.paystack_subscription_code || (!subscription?.stripeSubscriptionId && Number(subscription?.plan?.price) > 0)) ? (
+                              {(subscription?.paystack_subscription_code || (!subscription?.stripe_subscription_id && Number(subscription?.plan?.price) > 0)) ? (
                                 <Button
                                   onClick={handleCancelSubscription}
                                   disabled={isSaving}
@@ -1245,7 +1256,7 @@ export default function SettingsPage() {
                                   size="sm"
                                   className="bg-white text-slate-900 hover:bg-slate-100 font-semibold px-4"
                                 >
-                                  {subscription?.cancelAtPeriodEnd ? 'Reactivate Subscription' : 'Manage Subscription'}
+                                  {!subscription?.auto_renew ? 'Reactivate Subscription' : 'Manage Subscription'}
                                 </Button>
                               )}
                               <p className="text-[10px] text-slate-400 mt-2 pl-1">
@@ -1267,11 +1278,11 @@ export default function SettingsPage() {
                           )}
                         </div>
 
-                        {subscription?.currentPeriodEnd && subscription?.status !== 'canceled' && (
+                        {subscription?.current_period_end && subscription?.status !== 'canceled' && (
                           <p className="text-xs text-slate-500 mt-3">
-                            {subscription?.cancelAtPeriodEnd
-                              ? `Cancels on ${new Date(subscription.currentPeriodEnd).toLocaleDateString()}`
-                              : `Renews on ${new Date(subscription.currentPeriodEnd).toLocaleDateString()}`
+                            {!subscription?.auto_renew
+                              ? `Cancels on ${new Date(subscription.current_period_end).toLocaleDateString()}`
+                              : `Renews on ${new Date(subscription.current_period_end).toLocaleDateString()}`
                             }
                           </p>
                         )}
@@ -1350,7 +1361,7 @@ export default function SettingsPage() {
 
                         // Only consider subscription as current if it's ACTIVE
                         const isActiveSubscription = subscription?.status === 'active';
-                        const isCurrent = isActiveSubscription && subscription?.planId === plan.id;
+                        const isCurrent = isActiveSubscription && subscription?.plan_id === plan.id;
                         const isPro = plan.slug.includes('starter') || plan.slug.includes('enterprise');
                         // Highlight Starter as popular
                         const isPopular = plan.name === 'Starter';

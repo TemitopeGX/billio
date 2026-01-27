@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, PieChart as RePieChart, Pie, Cell } from "recharts";
+import { ReportsPageSkeleton } from "@/components/skeletons/page-skeletons";
+import { EmptyState } from "@/components/ui/empty-state";
 
 export default function ReportsPage() {
   const { data: invoices, isLoading: invoicesLoading, error: invoicesError } = useInvoices();
@@ -119,16 +121,7 @@ export default function ReportsPage() {
   };
 
   if (invoicesLoading || paymentsLoading) {
-    return (
-      <div className="p-8 space-y-8">
-        <div className="flex items-center justify-center h-64">
-          <div className="flex items-center space-x-2">
-            <Loader2 className="h-6 w-6 animate-spin text-slate-900" />
-            <span className="text-slate-500 font-medium">Loading reports...</span>
-          </div>
-        </div>
-      </div>
-    );
+    return <ReportsPageSkeleton />;
   }
 
   if (invoicesError || paymentsError) {
@@ -140,6 +133,28 @@ export default function ReportsPage() {
             <span className="font-medium">Error loading reports data</span>
           </div>
         </div>
+      </div>
+    );
+  }
+
+  // Show empty state when no data
+  if (!invoices || invoices.length === 0) {
+    return (
+      <div className="p-0 space-y-8 max-w-[100rem] mx-auto">
+        <div>
+          <h1 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">Reports</h1>
+          <p className="text-slate-500 text-lg">Analyze your business performance and financial insights</p>
+        </div>
+
+        <EmptyState
+          icon={BarChart3}
+          title="Not enough data for reports"
+          description="Create invoices and record payments to see detailed reports and insights about your business performance."
+          actionLabel="Create Invoice"
+          onAction={() => window.location.href = '/dashboard/invoices/new'}
+          secondaryActionLabel="View Invoices"
+          onSecondaryAction={() => window.location.href = '/dashboard/invoices'}
+        />
       </div>
     );
   }

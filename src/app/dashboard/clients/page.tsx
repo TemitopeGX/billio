@@ -49,6 +49,8 @@ import {
 } from "lucide-react";
 import { useClients } from "@/hooks/useClients";
 import api from "@/lib/api";
+import { ClientsPageSkeleton } from "@/components/skeletons/page-skeletons";
+import { EmptyState } from "@/components/ui/empty-state";
 
 export default function ClientsPage() {
   const router = useRouter();
@@ -89,6 +91,31 @@ export default function ClientsPage() {
         <Button onClick={() => refetch()} className="mt-4 bg-slate-900 text-white">
           Try Again
         </Button>
+      </div>
+    );
+  }
+
+  // Show skeleton loader while loading
+  if (isLoading) {
+    return <ClientsPageSkeleton />;
+  }
+
+  // Show empty state when no clients exist
+  if (!isLoading && (!clients || clients.length === 0)) {
+    return (
+      <div className="p-0 space-y-8 max-w-[100rem] mx-auto">
+        <div>
+          <h1 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">Clients</h1>
+          <p className="text-slate-500 text-lg">Manage your client relationships.</p>
+        </div>
+
+        <EmptyState
+          icon={Users}
+          title="No clients yet"
+          description="Add your first client to start creating invoices and tracking payments. Build your client database and grow your business."
+          actionLabel="Add Your First Client"
+          onAction={() => router.push('/dashboard/clients/new')}
+        />
       </div>
     );
   }
@@ -210,32 +237,15 @@ export default function ClientsPage() {
           </div>
         </div>
         <div className="p-0">
-          {isLoading ? (
-            <div className="py-16 text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-slate-900 mx-auto mb-4"></div>
-              <p className="text-slate-500">Loading clients...</p>
-            </div>
-          ) : filteredClients?.length === 0 ? (
-            <div className="py-16 text-center">
-              <div className="p-4 bg-slate-50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Building2 className="h-8 w-8 text-slate-400" />
-              </div>
-              <p className="text-slate-900 font-bold">
-                {searchTerm ? "No clients found" : "No clients yet"}
-              </p>
-              <p className="text-slate-500 text-sm mt-1">
-                {searchTerm
-                  ? "Try adjusting your search terms"
-                  : "Add your first client to get started"}
-              </p>
-              {!searchTerm && (
-                <Link href="/dashboard/clients/new" className="mt-6 inline-block">
-                  <Button className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-6 py-3 font-bold">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add New Client
-                  </Button>
-                </Link>
-              )}
+          {filteredClients?.length === 0 ? (
+            <div className="py-16">
+              <EmptyState
+                icon={searchTerm ? Search : Building2}
+                title={searchTerm ? "No clients match your search" : "No clients yet"}
+                description={searchTerm ? "Try adjusting your search terms to find what you're looking for." : "Add your first client to get started"}
+                actionLabel={searchTerm ? "Clear Search" : "Add New Client"}
+                onAction={() => searchTerm ? setSearchTerm('') : router.push('/dashboard/clients/new')}
+              />
             </div>
           ) : (
             <div className="overflow-x-auto">
