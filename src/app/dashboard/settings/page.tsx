@@ -30,6 +30,7 @@ import {
   Save,
   Loader2,
   Check,
+  Tag,
 } from "lucide-react";
 import api from "@/lib/api";
 import { useAuth } from "@/contexts/auth-context";
@@ -178,6 +179,39 @@ export default function SettingsPage() {
   const [usageStats, setUsageStats] = useState<UsageStats | null>(null);
   const [selectedGateway, setSelectedGateway] = useState<PaymentGateway>('stripe');
   const processedRef = useRef<string | null>(null);
+
+  // Coupon State
+  const [couponCode, setCouponCode] = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [couponMessage, setCouponMessage] = useState("");
+  const [couponSuccess, setCouponSuccess] = useState(false);
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) return;
+
+    try {
+      setCouponLoading(true);
+      setCouponMessage("");
+
+      const response = await api.post('/coupons/apply', {
+        code: couponCode
+      });
+
+      const { message } = response.data.data;
+
+      setCouponSuccess(true);
+      setCouponMessage(message);
+      toast.success(message);
+      setCouponCode("");
+    } catch (error: any) {
+      setCouponSuccess(false);
+      const msg = error.response?.data?.error?.message || "Invalid coupon";
+      setCouponMessage(msg);
+      toast.error(msg);
+    } finally {
+      setCouponLoading(false);
+    }
+  };
 
   // Handle URL parameters for tab switching and subscription status
   useEffect(() => {
@@ -1327,6 +1361,43 @@ export default function SettingsPage() {
                     </div>
                   </div>
 
+                  {/* Promo Code */}
+                  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-8">
+                    <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="bg-white p-2 rounded-lg border border-slate-200">
+                          <Tag className="h-5 w-5 text-slate-900" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-slate-900">Have a promo code?</h4>
+                          <p className="text-sm text-slate-500">Enter your code to get discounts on your subscription.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 w-full md:w-auto">
+                        <div className="relative w-full md:w-64">
+                          <Input
+                            value={couponCode}
+                            onChange={(e) => setCouponCode(e.target.value)}
+                            placeholder="ENTER CODE"
+                            className="uppercase font-mono placeholder:normal-case rounded-xl border-slate-200 focus:ring-0 focus:border-slate-900"
+                          />
+                        </div>
+                        <Button
+                          onClick={handleApplyCoupon}
+                          disabled={couponLoading || !couponCode}
+                          className="bg-slate-900 text-white font-bold rounded-xl"
+                        >
+                          {couponLoading ? 'Checking...' : 'Apply'}
+                        </Button>
+                      </div>
+                    </div>
+                    {couponMessage && (
+                      <p className={`text-sm mt-3 font-medium ${couponSuccess ? 'text-emerald-600' : 'text-red-500'}`}>
+                        {couponMessage}
+                      </p>
+                    )}
+                  </div>
+
                   {/* Available Plans */}
                   <div>
                     <h3 className="text-lg font-bold text-slate-900 mb-4">Available Plans</h3>
@@ -1418,8 +1489,12 @@ export default function SettingsPage() {
                         className={`flex-1 p-4 border rounded-xl flex items-center justify-between transition-all ${selectedGateway === 'stripe' ? 'border-emerald-500 bg-emerald-50 ring-1 ring-emerald-500' : 'border-slate-200 bg-white hover:border-slate-300'}`}
                       >
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
-                            <CreditCard className="w-4 h-4 text-slate-900" />
+                          <div className="w-14 h-8 flex items-center justify-center overflow-hidden">
+                            <img
+                              src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Stripe_Logo%2C_revised_2016.svg/2560px-Stripe_Logo%2C_revised_2016.svg.png"
+                              alt="Stripe"
+                              className="w-full h-full object-contain"
+                            />
                           </div>
                           <div className="text-left">
                             <p className="font-bold text-slate-900">Stripe</p>
@@ -1453,32 +1528,7 @@ export default function SettingsPage() {
                     </div>
                   </div>
 
-                  <Separator className="bg-slate-100" />
 
-                  {/* Billing History */}
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-4">Billing History</h3>
-                    <div className="border border-slate-200 rounded-xl overflow-hidden">
-                      <table className="w-full text-sm text-left">
-                        <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold">
-                          <tr>
-                            <th className="px-6 py-3">Date</th>
-                            <th className="px-6 py-3">Amount</th>
-                            <th className="px-6 py-3">Status</th>
-                            <th className="px-6 py-3 text-right">Invoice</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-100">
-                          <tr className="hover:bg-slate-50/50">
-                            <td className="px-6 py-4 font-medium text-slate-900">Oct 01, 2025</td>
-                            <td className="px-6 py-4">₦0.00</td>
-                            <td className="px-6 py-4"><span className="bg-emerald-50 text-emerald-700 px-2 py-1 rounded-full text-xs font-bold">Paid</span></td>
-                            <td className="px-6 py-4 text-right"><span className="text-slate-400">N/A</span></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
 
                 </div>
               </CardContent>

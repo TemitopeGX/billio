@@ -9,42 +9,42 @@ const testimonials = [
     content: "Billio completely transformed how we handle invoicing. We used to spend hours every Friday; now it's automated and takes minutes.",
     author: "Sarah Jenks",
     role: "Founder, Studio Design",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
+    avatar: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&h=100&fit=crop&crop=faces",
     company: "DesignCo"
   },
   {
     content: "The best investment we made this year. Clients pay faster because the invoices look professional and the payment links just work.",
     author: "Michael Chen",
     role: "Freelance Developer",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
+    avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&crop=faces",
     company: "DevStream"
   },
   {
     content: "I love the notification feature. Knowing exactly when a client views an invoice removes so much anxiety from the process.",
     author: "Jessica Lee",
     role: "Marketing Consultant",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jessica",
+    avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop&crop=faces",
     company: "GrowthLabs"
   },
   {
     content: "Simple, clean, and fast. Exactly what a small business needs without the bloat of enterprise software.",
     author: "David Ross",
     role: "Owner, Ross Plumbing",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=David",
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=faces",
     company: "RossFix"
   },
   {
     content: "The production quality of the invoices is unmatched. My clients actually compliment me on them!",
     author: "Emily Watson",
     role: "Photographer",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Emily",
+    avatar: "https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=100&h=100&fit=crop&crop=faces",
     company: "EW Photo"
   },
   {
     content: "Customer support is incredible. They helped me set up my complex tax requirements in no time.",
     author: "James Miller",
     role: "E-commerce Manager",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=James",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=faces",
     company: "ShopifyPlus"
   }
 ];

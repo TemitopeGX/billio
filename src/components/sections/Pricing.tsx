@@ -1,59 +1,46 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
+import api from "@/lib/api";
 
-const plans = [
-  {
-    name: "Free",
-    slug: "free",
-    price: 0,
-    description: "Perfect for freelancers just starting out.",
-    features: [
-      "5 Invoices / month",
-      "3 Clients",
-      "Basic reporting",
-      "Email support"
-    ],
-    highlight: false
-  },
-  {
-    name: "Starter",
-    slug: "starter",
-    price: 3000,
-    description: "Great for growing small businesses.",
-    features: [
-      "50 Invoices / month",
-      "20 Clients",
-      "PDF Export",
-      "Payment Tracking",
-      "Priority Support"
-    ],
-    highlight: true
-  },
-  {
-    name: "Enterprise",
-    slug: "enterprise",
-    price: 15000,
-    description: "For established businesses needing full power.",
-    features: [
-      "Unlimited Invoices",
-      "Unlimited Clients",
-      "Advanced Analytics",
-      "Custom Branding",
-      "Multi-user Access"
-    ],
-    highlight: false
-  }
-];
+interface Plan {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  price: string;
+  interval: string;
+  billing_period?: string;
+  features: string[];
+}
 
 export default function Pricing() {
   const [isAnnual, setIsAnnual] = useState(false);
+  const [plans, setPlans] = useState<Plan[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const { user } = useAuth();
+
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const response = await api.get('/subscriptions/plans');
+        // Handle different possible response structures
+        const fetchedPlans = response.data?.data?.plans || response.data?.data || [];
+        setPlans(fetchedPlans);
+      } catch (error) {
+        console.error("Failed to fetch plans:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPlans();
+  }, []);
 
   const handlePlanSelect = (slug: string) => {
     if (user) {
@@ -62,6 +49,20 @@ export default function Pricing() {
       router.push(`/auth/register?plan=${slug}`);
     }
   };
+
+  const displayedPlans = plans.filter(p => {
+    // Show free plan always? Or maybe Free doesn't have a billing period in DB
+    if (p.name === 'Free') return true;
+
+    // Check billing period or interval
+    const cycle = isAnnual ? 'yearly' : 'monthly';
+    return (p.billing_period === cycle || p.interval === cycle);
+  }).sort((a, b) => {
+    // Ensure Free is first, then ordered by price
+    if (Number(a.price) === 0) return -1;
+    if (Number(b.price) === 0) return 1;
+    return Number(a.price) - Number(b.price);
+  });
 
   return (
     <section id="pricing" className="py-32 bg-white relative overflow-hidden">
@@ -90,65 +91,84 @@ export default function Pricing() {
               />
             </button>
             <span className={`text-sm font-semibold ${isAnnual ? 'text-slate-900' : 'text-slate-500'}`}>
-              Yearly <span className="text-green-600 ml-1 font-bold">(Save 20%)</span>
+              Yearly <span className="text-emerald-600 ml-1 font-bold">(Save 17%)</span>
             </span>
           </div>
         </div>
 
         {/* Pricing Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {plans.map((plan, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className={`relative rounded-[2rem] p-8 flex flex-col ${plan.highlight
-                ? 'bg-slate-900 text-white ring-4 ring-slate-900/5 transform md:-translate-y-4'
-                : 'bg-white text-slate-900 border border-slate-200'
-                }`}
-            >
-              <div className="mb-8">
-                <h3 className={`text-xl font-bold mb-2 ${plan.highlight ? 'text-white' : 'text-slate-900'}`}>
-                  {plan.name}
-                </h3>
-                <p className={`text-sm ${plan.highlight ? 'text-slate-400' : 'text-slate-500'}`}>
-                  {plan.description}
-                </p>
-              </div>
+          {isLoading ? (
+            <div className="col-span-3 flex justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
+            </div>
+          ) : displayedPlans.map((plan, index) => {
+            const isPopular = plan.name === 'Starter';
+            const highlight = isPopular;
 
-              <div className="mb-8 flex items-baseline">
-                <span className="text-4xl lg:text-5xl font-bold tracking-tight">
-                  {plan.price === 0 ? 'Free' : `₦${(isAnnual ? Math.round(plan.price * 12 * 0.8 / 12) : plan.price).toLocaleString()}`}
-                </span>
-                <span className={`ml-2 text-sm font-semibold ${plan.highlight ? 'text-slate-400' : 'text-slate-500'}`}>/mo</span>
-              </div>
-
-              <div className="space-y-4 mb-8 flex-1">
-                {plan.features.map((feature, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <div className={`mt-0.5 rounded-full p-0.5 ${plan.highlight ? 'bg-slate-800' : 'bg-slate-100'}`}>
-                      <Check className={`w-3.5 h-3.5 ${plan.highlight ? 'text-white' : 'text-slate-900'}`} />
-                    </div>
-                    <span className={`text-sm ${plan.highlight ? 'text-slate-300' : 'text-slate-600'}`}>
-                      {feature}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              <button
-                onClick={() => handlePlanSelect(plan.slug)}
-                className={`w-full py-4 rounded-xl font-bold transition-all text-sm ${plan.highlight
-                  ? 'bg-white text-slate-900 hover:bg-slate-100'
-                  : 'bg-slate-900 text-white hover:bg-slate-800'
+            return (
+              <motion.div
+                key={plan.id || index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className={`relative rounded-[2rem] p-8 flex flex-col ${highlight
+                  ? 'bg-slate-900 text-white ring-4 ring-slate-900/5 transform md:-translate-y-4 shadow-xl'
+                  : 'bg-white text-slate-900 border border-slate-200'
                   }`}
               >
-                {plan.price === 0 ? "Get Started" : `Choose ${plan.name}`}
-              </button>
-            </motion.div>
-          ))}
+                {isPopular && (
+                  <div className="absolute top-0 right-0 left-0 mx-auto w-max -mt-3 bg-slate-900 text-white text-xs font-bold px-3 py-1 rounded-full border border-slate-800">
+                    MOST POPULAR
+                  </div>
+                )}
+
+                <div className="mb-8">
+                  <h3 className={`text-xl font-bold mb-2 ${highlight ? 'text-white' : 'text-slate-900'}`}>
+                    {plan.name}
+                  </h3>
+                  <p className={`text-sm ${highlight ? 'text-slate-400' : 'text-slate-500'}`}>
+                    {plan.description || "The perfect plan for you."}
+                  </p>
+                </div>
+
+                <div className="mb-8 flex items-baseline">
+                  <span className="text-4xl lg:text-5xl font-bold tracking-tight">
+                    {Number(plan.price) === 0 ? 'Free' : `₦${Number(plan.price).toLocaleString()}`}
+                  </span>
+                  {Number(plan.price) !== 0 && (
+                    <span className={`ml-2 text-sm font-semibold ${highlight ? 'text-slate-400' : 'text-slate-500'}`}>
+                      /{isAnnual ? 'yr' : 'mo'}
+                    </span>
+                  )}
+                </div>
+
+                <div className="space-y-4 mb-8 flex-1">
+                  {plan.features.slice(0, 6).map((feature, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <div className={`mt-0.5 rounded-full p-0.5 ${highlight ? 'bg-slate-800' : 'bg-slate-100'}`}>
+                        <Check className={`w-3.5 h-3.5 ${highlight ? 'text-white' : 'text-slate-900'}`} />
+                      </div>
+                      <span className={`text-sm ${highlight ? 'text-slate-300' : 'text-slate-600'}`}>
+                        {feature}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => handlePlanSelect(plan.slug)}
+                  className={`w-full py-4 rounded-xl font-bold transition-all text-sm ${highlight
+                    ? 'bg-white text-slate-900 hover:bg-slate-100'
+                    : 'bg-slate-900 text-white hover:bg-slate-800'
+                    }`}
+                >
+                  {Number(plan.price) === 0 ? "Get Started" : `Choose ${plan.name}`}
+                </button>
+              </motion.div>
+            );
+          })}
         </div>
 
         <div className="mt-20 text-center">

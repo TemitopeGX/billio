@@ -46,31 +46,58 @@ const features = [
     },
     {
         number: "02",
-        title: "Global Payments",
-        description: "Accept payments from 190+ countries seamlessly.",
+        title: "Easy Client Management",
+        description: "Organize client details, invoices, and history in one place.",
         visual: (
             <>
-                {/* Currency orbs */}
+                {/* Client Profile Card */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="relative w-48 h-48">
-                        {/* Orbiting currencies */}
-                        <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                            className="absolute inset-0"
-                        >
-                            <div className="absolute -top-2 left-1/2 -translate-x-1/2 h-14 w-14 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center text-xl font-bold text-slate-900">$</div>
-                            <div className="absolute top-1/2 -right-2 -translate-y-1/2 h-12 w-12 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center text-lg font-bold text-slate-800">€</div>
-                            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-14 w-14 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center text-xl font-bold text-slate-900">£</div>
-                            <div className="absolute top-1/2 -left-2 -translate-y-1/2 h-12 w-12 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center text-lg font-bold text-slate-800">₦</div>
-                        </motion.div>
-                        {/* Center globe */}
-                        <div className="absolute inset-8 rounded-full bg-slate-100 border border-slate-200 shadow-inner flex items-center justify-center">
-                            <div className="w-full h-full rounded-full border-2 border-slate-300/30 relative overflow-hidden">
-                                <div className="absolute inset-0 border-t-2 border-slate-300/30 rounded-full"></div>
-                                <div className="absolute top-1/2 left-0 right-0 h-px bg-slate-300/30"></div>
-                                <div className="absolute top-0 bottom-0 left-1/2 w-px bg-slate-300/30"></div>
+                    <div className="w-64 bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+                        {/* Header */}
+                        <div className="bg-slate-50 p-4 border-b border-slate-100 flex items-center gap-3">
+                            <div className="h-10 w-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-500 font-bold">JD</div>
+                            <div>
+                                <div className="text-xs font-bold text-slate-900">John Doe</div>
+                                <div className="text-[10px] text-slate-500">john@example.com</div>
                             </div>
+                        </div>
+                        {/* Activity List */}
+                        <div className="p-4 space-y-3">
+                            {/* Animated Items */}
+                            <motion.div
+                                initial={{ x: -10, opacity: 0 }}
+                                whileInView={{ x: 0, opacity: 1 }}
+                                transition={{ delay: 0.2 }}
+                                className="flex items-center justify-between"
+                            >
+                                <div className="flex items-center gap-2">
+                                    <div className="h-2 w-2 rounded-full bg-emerald-500"></div>
+                                    <span className="text-[10px] font-medium text-slate-700">Invoice #1024</span>
+                                </div>
+                                <span className="text-[10px] text-emerald-600 font-bold">Paid</span>
+                            </motion.div>
+
+                            <motion.div
+                                initial={{ x: -10, opacity: 0 }}
+                                whileInView={{ x: 0, opacity: 1 }}
+                                transition={{ delay: 0.4 }}
+                                className="flex items-center justify-between"
+                            >
+                                <div className="flex items-center gap-2">
+                                    <div className="h-2 w-2 rounded-full bg-blue-500"></div>
+                                    <span className="text-[10px] font-medium text-slate-700">Invoice #1025</span>
+                                </div>
+                                <span className="text-[10px] text-slate-400">Sent</span>
+                            </motion.div>
+
+                            <motion.div
+                                initial={{ width: 0 }}
+                                whileInView={{ width: "4rem" }}
+                                transition={{ delay: 0.6, duration: 0.5 }}
+                                className="mt-2 pt-2 border-t border-slate-100 flex justify-center mx-auto"
+                            >
+                                <div className="h-1.5 w-full bg-slate-100 rounded-full"></div>
+                            </motion.div>
                         </div>
                     </div>
                 </div>
@@ -170,39 +197,64 @@ const features = [
     },
     {
         number: "05",
-        title: "Bank-Grade Security",
-        description: "256-bit encryption protects every transaction.",
+        title: "Quote to Invoice",
+        description: "Convert approved quotes into invoices with one click.",
         visual: (
             <>
-                {/* Security visualization */}
+                {/* Visual showing conversion flow */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="relative">
-                        {/* Outer ring */}
+                    <div className="flex items-center gap-4 relative">
+                        {/* Quote Doc */}
                         <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                            className="absolute inset-0 w-40 h-40 rounded-full border-2 border-dashed border-slate-300"
-                        ></motion.div>
-                        {/* Middle ring */}
-                        <motion.div
-                            animate={{ rotate: -360 }}
-                            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                            className="absolute inset-4 rounded-full border-2 border-slate-200"
-                        ></motion.div>
-                        {/* Shield center */}
-                        <div className="relative w-40 h-40 flex items-center justify-center">
-                            <div className="h-20 w-20 rounded-2xl bg-slate-900 shadow-xl flex items-center justify-center">
-                                <svg className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-                                </svg>
+                            initial={{ y: 0 }}
+                            animate={{ y: [0, -5, 0] }}
+                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                            className="w-24 h-32 bg-white border border-slate-200 rounded-lg shadow-sm p-3 relative transform -rotate-6"
+                        >
+                            <div className="h-1.5 w-8 bg-slate-200 rounded mb-2"></div>
+                            <div className="space-y-1.5 mb-2">
+                                <div className="h-1 w-full bg-slate-100 rounded"></div>
+                                <div className="h-1 w-full bg-slate-100 rounded"></div>
+                                <div className="h-1 w-2/3 bg-slate-100 rounded"></div>
                             </div>
-                            {/* Checkmark badge */}
-                            <div className="absolute -top-1 -right-1 h-8 w-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-lg">
-                                <svg className="h-4 w-4 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <div className="absolute top-2 right-2 text-[8px] font-bold text-slate-400">QUOTE</div>
+                        </motion.div>
+
+                        {/* Arrow */}
+                        <div className="bg-slate-100 rounded-full p-2 z-10">
+                            <svg className="w-6 h-6 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                        </div>
+
+                        {/* Invoice Doc */}
+                        <motion.div
+                            initial={{ y: 0 }}
+                            animate={{ y: [0, -5, 0] }}
+                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                            className="w-24 h-32 bg-slate-900 border border-slate-800 rounded-lg shadow-lg p-3 relative transform rotate-6 text-white"
+                        >
+                            <div className="h-1.5 w-8 bg-slate-600 rounded mb-2"></div>
+                            <div className="space-y-1.5 mb-2">
+                                <div className="h-1 w-full bg-slate-800 rounded"></div>
+                                <div className="h-1 w-full bg-slate-800 rounded"></div>
+                                <div className="h-1 w-2/3 bg-slate-800 rounded"></div>
+                            </div>
+                            {/* Floating check */}
+                            <motion.div
+                                initial={{ scale: 0 }}
+                                whileInView={{ scale: 1 }}
+                                transition={{ delay: 0.5, type: "spring" }}
+                                className="absolute -top-2 -right-2 h-6 w-6 bg-emerald-500 rounded-full flex items-center justify-center border-2 border-white"
+                            >
+                                <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                 </svg>
+                            </motion.div>
+                            <div className="absolute bottom-3 left-3 right-3 h-6 bg-slate-800 rounded flex items-center justify-center">
+                                <span className="text-[8px] font-bold text-white">INVOICE</span>
                             </div>
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
             </>

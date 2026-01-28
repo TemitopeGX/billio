@@ -76,9 +76,19 @@ export default function Hero() {
 
                         <div className="pt-8 flex items-center gap-8 text-sm font-medium text-slate-400">
                             <div className="flex -space-x-3">
-                                {[1, 2, 3, 4].map(i => (
-                                    <div key={i} className="h-10 w-10 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center overflow-hidden">
-                                        <Image src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i}`} alt="User" width={40} height={40} />
+                                {[
+                                    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop&crop=faces",
+                                    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=64&h=64&fit=crop&crop=faces",
+                                    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=64&h=64&fit=crop&crop=faces",
+                                    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&crop=faces"
+                                ].map((src, i) => (
+                                    <div key={i} className="h-10 w-10 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center overflow-hidden relative">
+                                        <Image
+                                            src={src}
+                                            alt="User"
+                                            fill
+                                            className="object-cover"
+                                        />
                                     </div>
                                 ))}
                             </div>
