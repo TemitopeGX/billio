@@ -31,6 +31,7 @@ import {
   Loader2,
   Check,
   Tag,
+  Lock,
 } from "lucide-react";
 import api from "@/lib/api";
 import { useAuth } from "@/contexts/auth-context";
@@ -126,7 +127,7 @@ export default function SettingsPage() {
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState<'profile' | 'company' | 'appearance' | 'notifications' | 'billing'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'company' | 'appearance' | 'notifications' | 'billing' | 'security'>('profile');
   const [profileErrors, setProfileErrors] = useState<Partial<ProfileSettings>>({});
   const [autoSaveStatus, setAutoSaveStatus] = useState<string>('');
 
@@ -146,6 +147,12 @@ export default function SettingsPage() {
     phone: "",
     address: "",
     avatar: null
+  });
+
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
   });
 
   // Manage notification settings locally
@@ -575,9 +582,44 @@ export default function SettingsPage() {
     { id: 'profile', label: 'Profile', icon: User },
     { id: 'company', label: 'Company', icon: Building2 },
     // { id: 'appearance', label: 'Appearance', icon: Palette }, // Hidden for now
+    { id: 'security', label: 'Security', icon: Lock },
     { id: 'notifications', label: 'Notifications', icon: Bell },
     { id: 'billing', label: 'Billing', icon: CreditCard },
   ];
+
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      toast.error("New passwords do not match");
+      return;
+    }
+
+    if (passwordData.newPassword.length < 8) {
+      toast.error("Password must be at least 8 characters");
+      return;
+    }
+
+    try {
+      setIsSaving(true);
+      await api.put('/users/profile/password', {
+        currentPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword,
+      });
+
+      toast.success("Password updated successfully");
+      setPasswordData({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+      });
+    } catch (error: any) {
+      console.error("Error updating password:", error);
+      toast.error(error.response?.data?.error || error.response?.data?.message || "Failed to update password");
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   const handleUpgrade = async (planSlug: string) => {
     try {
@@ -781,6 +823,81 @@ export default function SettingsPage() {
                           <Save className="h-4 w-4 mr-2" />
                           Save Profile
                         </>
+                      )}
+                    </Button>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Security Settings */}
+          {activeTab === 'security' && (
+            <Card className="border-slate-200 shadow-sm">
+              <CardHeader className="pb-6 border-b border-slate-100">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 bg-slate-100 rounded-lg">
+                    <Lock className="h-6 w-6 text-slate-900" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-xl font-bold text-slate-900">Security Settings</CardTitle>
+                    <CardDescription className="text-slate-500">Manage your password and security preferences</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <form onSubmit={handlePasswordChange} className="max-w-md space-y-6">
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="currentPassword">Current Password</Label>
+                      <Input
+                        id="currentPassword"
+                        type="password"
+                        value={passwordData.currentPassword}
+                        onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
+                        required
+                        className="rounded-xl bg-slate-50 border-slate-200"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="newPassword">New Password</Label>
+                      <Input
+                        id="newPassword"
+                        type="password"
+                        value={passwordData.newPassword}
+                        onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+                        required
+                        minLength={8}
+                        className="rounded-xl bg-slate-50 border-slate-200"
+                      />
+                      <p className="text-xs text-slate-500">Must be at least 8 characters long</p>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                      <Input
+                        id="confirmPassword"
+                        type="password"
+                        value={passwordData.confirmPassword}
+                        onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
+                        required
+                        className="rounded-xl bg-slate-50 border-slate-200"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="pt-4">
+                    <Button
+                      type="submit"
+                      disabled={isSaving}
+                      className="bg-slate-900 hover:bg-slate-800 text-white w-full h-12 rounded-xl font-bold"
+                    >
+                      {isSaving ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          Updating Password...
+                        </>
+                      ) : (
+                        'Update Password'
                       )}
                     </Button>
                   </div>
