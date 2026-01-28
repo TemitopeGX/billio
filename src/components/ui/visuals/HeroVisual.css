@@ -1,0 +1,58 @@
+.hero-visual {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    aspect-ratio: 1 / 0.95;
+    /* Taller aspect ratio */
+    border-radius: 48px;
+    overflow: hidden;
+    margin: 0;
+}
+
+/* 
+   THE CUTOUTS 
+*/
+
+/* Top Left Cutout */
+.hero-visual::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    background: #ffffff;
+    border-bottom-right-radius: 40px;
+    z-index: 10;
+}
+
+/* Bottom Right Cutout */
+.hero-visual::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 160px;
+    height: 160px;
+    background: #ffffff;
+    border-top-left-radius: 50px;
+    z-index: 10;
+}
+
+
+/* Content Layer */
+.hero-visual__content {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+}
+
+/* Dashboard Mockup - FULL BLEED */
+.hero-visual__dashboard {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    /* Behind cutouts (z:10) but visible */
+}

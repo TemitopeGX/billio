@@ -108,8 +108,8 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-end gap-6">
           <div className="space-y-2">
-            <p className="text-slate-500 text-sm">Developed by TemitopeGX</p>
-            <p className="text-slate-500 text-sm">&copy; 2024 Billio Inc. All rights reserved.</p>
+            <p className="text-slate-500 text-sm">Developed by Devluxe Studio</p>
+            <p className="text-slate-500 text-sm">&copy; {new Date().getFullYear()} Billio Inc. All rights reserved.</p>
           </div>
 
           {/* Status Indicator */}
