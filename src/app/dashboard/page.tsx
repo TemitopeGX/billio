@@ -261,57 +261,57 @@ export default function DashboardPage() {
         )}
 
         {/* Welcome Section */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">Welcome back!</h1>
-          <p className="text-slate-500 text-lg">Here's what's happening with your business today.</p>
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mb-1 sm:mb-2 tracking-tight">Welcome back!</h1>
+          <p className="text-slate-500 text-base sm:text-lg">Here's what's happening with your business today.</p>
         </div>
 
         {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8">
           {statsData.map((stat, index) => {
             return (
-              <div key={index} className="group relative overflow-hidden bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
+              <div key={index} className="group relative overflow-hidden bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
                 {stat.cardType === "credit-card" && (
-                  <div className="h-40 bg-slate-900 rounded-xl relative overflow-hidden m-2">
+                  <div className="h-28 sm:h-40 bg-slate-900 rounded-xl relative overflow-hidden m-2 flex-grow">
                     {/* Abstract Pattern */}
                     <div className="absolute top-0 right-0 w-32 h-32 bg-slate-800 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 opacity-50"></div>
 
                     <div className="absolute top-4 left-4">
-                      <span className="text-xs font-black text-white/50 uppercase tracking-widest">BILLIO</span>
+                      <span className="text-[10px] sm:text-xs font-black text-white/50 uppercase tracking-widest">BILLIO</span>
                     </div>
 
                     <div className="absolute top-4 right-4">
-                      <div className="flex items-center space-x-1 bg-emerald-500/20 rounded-full px-2 py-1 text-emerald-400">
-                        <ArrowUp className="h-3 w-3" />
-                        <span className="text-xs font-bold">{stat.change}</span>
+                      <div className="flex items-center space-x-1 bg-emerald-500/20 rounded-full px-2 py-0.5 sm:py-1 text-emerald-400">
+                        <ArrowUp className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                        <span className="text-[10px] sm:text-xs font-bold">{stat.change}</span>
                       </div>
                     </div>
 
-                    <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-                      <div className="text-3xl font-bold tracking-tight">{stat.value}</div>
-                      <div className="text-sm text-slate-400 mt-1">{stat.description}</div>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-4">
+                      <div className="text-2xl sm:text-3xl font-bold tracking-tight">{stat.value}</div>
+                      <div className="text-[10px] sm:text-sm text-slate-400 mt-0.5 sm:mt-1 text-center">{stat.description}</div>
                     </div>
                   </div>
                 )}
 
                 {stat.cardType !== "credit-card" && (
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="p-3 bg-slate-50 rounded-xl group-hover:bg-slate-100 transition-colors">
-                        <stat.icon className="h-6 w-6 text-slate-400 group-hover:text-slate-900 transition-colors" />
+                  <div className="p-3 sm:p-6 flex-grow flex flex-col justify-between">
+                    <div className="flex items-center justify-between mb-3 sm:mb-4">
+                      <div className="p-2 sm:p-3 bg-slate-50 rounded-xl group-hover:bg-slate-100 transition-colors">
+                        <stat.icon className="h-4 w-4 sm:h-6 sm:w-6 text-slate-400 group-hover:text-slate-900 transition-colors" />
                       </div>
-                      <div className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-bold ${stat.trendColor === 'green'
+                      <div className={`flex items-center space-x-1 px-2 py-1 rounded-full text-[10px] sm:text-xs font-bold ${stat.trendColor === 'green'
                         ? 'bg-emerald-50 text-emerald-600'
                         : 'bg-red-50 text-red-600'
                         }`}>
-                        {stat.trendColor === 'green' ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />}
+                        {stat.trendColor === 'green' ? <ArrowUp className="h-2.5 w-2.5 sm:h-3 sm:w-3" /> : <ArrowDown className="h-2.5 w-2.5 sm:h-3 sm:w-3" />}
                         <span>{stat.change}</span>
                       </div>
                     </div>
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium text-slate-500">{stat.title}</p>
-                      <p className="text-3xl font-bold text-slate-900">{stat.value}</p>
-                      <p className="text-xs text-slate-400">{stat.description}</p>
+                    <div className="space-y-0.5 sm:space-y-1 mt-auto">
+                      <p className="text-[10px] sm:text-sm font-medium text-slate-500 line-clamp-1">{stat.title}</p>
+                      <p className="text-lg sm:text-3xl font-bold text-slate-900 truncate">{stat.value}</p>
+                      <p className="text-[9px] sm:text-xs text-slate-400 line-clamp-1">{stat.description}</p>
                     </div>
                   </div>
                 )}
@@ -321,23 +321,23 @@ export default function DashboardPage() {
         </div>
 
         {/* Charts & Activity */}
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 xl:gap-8">
           {/* Revenue Chart */}
           <div className="xl:col-span-2 space-y-6">
             {/* Revenue Chart */}
-            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm h-fit">
-              <div className="flex items-center justify-between mb-8">
+            <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm h-fit">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-2">
                 <div>
-                  <h3 className="text-xl font-bold text-slate-900">Revenue Overview</h3>
-                  <p className="text-slate-500 text-sm mt-1 font-medium">Last 7 days performance</p>
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900">Revenue Overview</h3>
+                  <p className="text-slate-500 text-xs sm:text-sm mt-0.5 sm:mt-1 font-medium">Last 7 days performance</p>
                 </div>
               </div>
               <ChartContainer config={chartConfig} className="h-[300px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={salesTrendData} margin={{ top: 5, right: 10, left: 10, bottom: 0 }}>
+                  <LineChart data={salesTrendData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
-                    <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12, fontWeight: 600 }} dy={10} />
-                    <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12, fontWeight: 600 }} />
+                    <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 10, fontWeight: 600 }} dy={10} />
+                    <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 10, fontWeight: 600 }} width={42} tickFormatter={(value) => value >= 1000 ? `${(value / 1000).toFixed(value % 1000 === 0 ? 0 : 1)}k` : value} />
                     <ChartTooltip content={<ChartTooltipContent />} />
                     <Line type="monotone" dataKey="revenue" stroke="#0f172a" strokeWidth={3} dot={{ fill: '#0f172a', strokeWidth: 0, r: 4 }} activeDot={{ r: 6, strokeWidth: 0 }} />
                     <Line type="monotone" dataKey="invoices" stroke="#cbd5e1" strokeWidth={3} dot={{ fill: '#cbd5e1', strokeWidth: 0, r: 4 }} />
@@ -396,8 +396,8 @@ export default function DashboardPage() {
                         {getActivityIcon(activity.type)}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-bold text-slate-900">{activity.message}</p>
-                        <p className="text-xs text-slate-500 mt-0.5">
+                        <p className="text-xs sm:text-sm font-bold text-slate-900 leading-tight md:leading-normal">{activity.message}</p>
+                        <p className="text-[10px] sm:text-xs text-slate-500 mt-1">
                           {activity.amount && `${activity.amount} • `}
                           {getTimeAgo(activity.time)}
                         </p>
@@ -419,14 +419,14 @@ export default function DashboardPage() {
         </div>
 
         {/* Recent Invoices Table */}
-        <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-          <div className="flex items-center justify-between mb-8">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 lg:p-8 border border-slate-200 shadow-sm">
+          <div className="flex items-center justify-between mb-6 sm:mb-8">
             <div>
-              <h3 className="text-xl font-bold text-slate-900">Recent Invoices</h3>
-              <p className="text-slate-500 text-sm mt-1 font-medium">Latest billing activity</p>
+              <h3 className="text-lg sm:text-xl font-bold text-slate-900">Recent Invoices</h3>
+              <p className="text-slate-500 text-xs sm:text-sm mt-0.5 sm:mt-1 font-medium">Latest billing activity</p>
             </div>
             <Link href="/dashboard/invoices">
-              <Button variant="outline" className="rounded-xl px-6 py-2 border-slate-200 text-slate-700 hover:bg-slate-50 font-bold shadow-none">
+              <Button variant="outline" className="rounded-xl px-4 sm:px-6 py-2 border-slate-200 text-slate-700 hover:bg-slate-50 font-bold shadow-none text-xs sm:text-sm h-9 sm:h-10">
                 View All
               </Button>
             </Link>
@@ -437,21 +437,21 @@ export default function DashboardPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-b border-slate-100 hover:bg-transparent">
-                    <TableHead className="font-bold text-slate-900 py-4 pl-0">Invoice</TableHead>
-                    <TableHead className="font-bold text-slate-900 py-4">Client</TableHead>
-                    <TableHead className="font-bold text-slate-900 py-4">Status</TableHead>
-                    <TableHead className="font-bold text-slate-900 text-right py-4">Amount</TableHead>
-                    <TableHead className="font-bold text-slate-900 text-right py-4 pr-0">Actions</TableHead>
+                    <TableHead className="font-bold text-slate-900 py-3 sm:py-4 pl-0 text-xs sm:text-sm whitespace-nowrap">Invoice</TableHead>
+                    <TableHead className="font-bold text-slate-900 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">Client</TableHead>
+                    <TableHead className="font-bold text-slate-900 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">Status</TableHead>
+                    <TableHead className="font-bold text-slate-900 text-right py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">Amount</TableHead>
+                    <TableHead className="font-bold text-slate-900 text-right py-3 sm:py-4 pr-0 text-xs sm:text-sm whitespace-nowrap">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {recentInvoices.map((invoice) => (
                     <TableRow key={invoice.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                      <TableCell className="font-bold text-slate-900 py-4 pl-0">{invoice.number}</TableCell>
-                      <TableCell className="text-slate-600 py-4">{invoice.client?.name || 'Unknown'}</TableCell>
-                      <TableCell className="py-4">{getStatusBadge(invoice.status)}</TableCell>
-                      <TableCell className="text-right font-bold text-slate-900 py-4">{formatCurrency(invoice.amount)}</TableCell>
-                      <TableCell className="text-right py-4 pr-0">
+                      <TableCell className="font-bold text-slate-900 py-3 sm:py-4 pl-0 text-xs sm:text-sm whitespace-nowrap">{invoice.number}</TableCell>
+                      <TableCell className="text-slate-600 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap truncate max-w-[120px]">{invoice.client?.name || 'Unknown'}</TableCell>
+                      <TableCell className="py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">{getStatusBadge(invoice.status)}</TableCell>
+                      <TableCell className="text-right font-bold text-slate-900 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">{formatCurrency(invoice.amount)}</TableCell>
+                      <TableCell className="text-right py-3 sm:py-4 pr-0 whitespace-nowrap">
                         <Link href={`/dashboard/invoices/${invoice.id}`}>
                           <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-slate-100 text-slate-400 hover:text-slate-900 rounded-lg">
                             <Eye className="h-4 w-4" />

@@ -75,9 +75,9 @@ export default function Hero() {
 
                             <div className="bg-white border border-slate-100 shadow-lg rounded-2xl p-4 flex items-center gap-4">
                                 <div className="flex -space-x-3">
-                                    {[1, 2, 3].map(i => (
+                                    {['hero-1.jpg', 'hero-2.jpg', 'hero-3.jpg'].map((img, i) => (
                                         <div key={i} className="w-10 h-10 rounded-full bg-slate-200 border-2 border-white overflow-hidden relative">
-                                            <Image src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="User" fill className="object-cover" />
+                                            <Image src={`/images/avatars/${img}`} alt="User" fill className="object-cover" />
                                         </div>
                                     ))}
                                     <div className="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold border-2 border-white relative z-10">

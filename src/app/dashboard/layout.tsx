@@ -30,6 +30,8 @@ import {
   ChevronDown,
   MessageSquare,
   Clock,
+  Menu,
+  X,
 } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
 import { useProfile } from "@/hooks/useProfile";
@@ -73,6 +75,7 @@ export default function DashboardLayout({
   } = useNotifications();
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { showFirstInvoiceFeedback, closeFirstInvoiceFeedback } = useFirstInvoiceFeedback();
 
   const sessionConfig = isRememberMe
@@ -137,16 +140,26 @@ export default function DashboardLayout({
         <div className="px-6 py-3">
           <div className="flex items-center justify-between">
             {/* Logo Section */}
-            <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-3 sm:space-x-4">
+              {/* Mobile Menu Icon */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="p-1 sm:p-2 hover:bg-slate-100 rounded-xl lg:hidden text-slate-500"
+              >
+                {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </Button>
+
               <Link href="/dashboard" className="flex items-center group">
-                <span className="text-2xl font-black text-slate-900 tracking-tighter">
+                <span className="text-xl sm:text-2xl font-black text-slate-900 tracking-tighter">
                   Billio.
                 </span>
               </Link>
             </div>
 
             {/* Search Bar */}
-            <div className="flex-1 max-w-2xl mx-8">
+            <div className="hidden md:flex flex-1 max-w-2xl mx-8">
               <button
                 onClick={() => setIsSearchOpen(true)}
                 className="w-full flex items-center gap-3 pl-4 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 hover:border-slate-300 transition-all duration-200 text-sm group"
@@ -160,8 +173,18 @@ export default function DashboardLayout({
             </div>
 
             {/* Right Actions */}
-            <div className="flex items-center space-x-3">
-              {/* Quick Actions */}
+            <div className="flex items-center gap-1.5 sm:gap-4 shrink-0">
+              {/* Mobile Search Icon */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsSearchOpen(true)}
+                className="p-0 hover:bg-slate-100 rounded-xl md:hidden text-slate-500 h-9 w-9 flex items-center justify-center"
+              >
+                <Search className="h-5 w-5" />
+              </Button>
+
+              {/* Quick Actions - Desktop Only */}
               <div className="hidden lg:flex items-center space-x-2">
                 <Link href="/dashboard/invoices/new">
                   <Button className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-4 py-2 font-bold shadow-none transition-all">
@@ -177,14 +200,21 @@ export default function DashboardLayout({
                 </Link>
               </div>
 
+              {/* Mobile Quick Action Link */}
+              <Link href="/dashboard/invoices/new" className="lg:hidden flex items-center">
+                <Button size="sm" className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl h-9 w-9 p-0 shadow-none transition-all flex items-center justify-center shrink-0">
+                  <Plus className="h-5 w-5" />
+                </Button>
+              </Link>
+
               {/* Notifications */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="relative p-3 hover:bg-slate-100 rounded-xl">
+                  <Button variant="ghost" size="sm" className="relative p-0 hover:bg-slate-100 rounded-xl h-9 w-9 sm:h-10 sm:w-10 flex items-center justify-center shrink-0">
                     <Bell className="h-5 w-5 text-slate-500" />
                     {unreadCount > 0 && (
-                      <span className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 rounded-full flex items-center justify-center border-2 border-white">
-                        <span className="text-[10px] text-white font-bold leading-none">
+                      <span className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 bg-red-500 rounded-full flex items-center justify-center border-2 border-white">
+                        <span className="text-[9px] sm:text-[10px] text-white font-bold leading-none">
                           {unreadCount > 9 ? '9+' : unreadCount}
                         </span>
                       </span>
@@ -256,7 +286,7 @@ export default function DashboardLayout({
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsFeedbackModalOpen(true)}
-                className="p-3 hover:bg-slate-100 rounded-xl text-slate-500 hover:text-slate-900 transition-colors"
+                className="p-0 hover:bg-slate-100 rounded-xl text-slate-500 hover:text-slate-900 transition-colors h-9 w-9 sm:h-10 sm:w-10 flex items-center justify-center shrink-0 hidden sm:flex"
                 title="Share Feedback"
               >
                 <MessageSquare className="h-5 w-5" />
@@ -265,19 +295,19 @@ export default function DashboardLayout({
               {/* User Profile */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="p-2 hover:bg-slate-100 rounded-xl transition-all">
-                    <div className="flex items-center space-x-3">
-                      <Avatar className="h-9 w-9 border border-slate-200">
+                  <Button variant="ghost" className="p-0 sm:p-2 hover:bg-slate-100 rounded-xl transition-all h-9 w-9 sm:h-auto sm:w-auto shrink-0 flex items-center justify-center">
+                    <div className="flex items-center sm:space-x-3">
+                      <Avatar className="h-9 w-9 sm:h-10 sm:w-10 border border-slate-200">
                         <AvatarImage src={profile?.avatar || undefined} />
                         <AvatarFallback className="bg-slate-900 text-white font-bold text-sm">
                           {profile ? getUserInitials(profile.name) : (user ? getUserInitials(user.name) : 'U')}
                         </AvatarFallback>
                       </Avatar>
-                      <div className="hidden lg:block text-left">
+                      <div className="hidden sm:block text-left">
                         <p className="text-sm font-bold text-slate-900">{profile?.name || user?.name || 'User'}</p>
                         <p className="text-xs text-slate-500">Business Owner</p>
                       </div>
-                      <ChevronDown className="h-4 w-4 text-slate-400" />
+                      <ChevronDown className="h-4 w-4 text-slate-400 hidden sm:block" />
                     </div>
                   </Button>
                 </DropdownMenuTrigger>
@@ -330,8 +360,8 @@ export default function DashboardLayout({
           </div>
         </div>
 
-        {/* Navigation Tabs */}
-        <div className="px-6 pb-2">
+        {/* Navigation Tabs - Hidden on Mobile */}
+        <div className="px-6 pb-2 hidden lg:block">
           <div className="flex items-center space-x-1 bg-slate-100/50 rounded-xl p-1 w-fit border border-slate-200/50">
             {topNav.map((item) => {
               const isActive = pathname === item.href;
@@ -353,8 +383,126 @@ export default function DashboardLayout({
         </div>
       </header>
 
+      {/* Mobile Drawer Navigation */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-[100] lg:hidden animate-in fade-in duration-200">
+          <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)} />
+          <div className="absolute top-0 bottom-0 left-0 w-[280px] bg-white shadow-2xl animate-in slide-in-from-left duration-300">
+            <div className="flex flex-col h-full">
+              <div className="p-6 border-b border-slate-100">
+                <Link href="/dashboard" className="flex items-center group" onClick={() => setIsMobileMenuOpen(false)}>
+                  <span className="text-2xl font-black text-slate-900 tracking-tighter">
+                    Billio.
+                  </span>
+                </Link>
+                <p className="text-xs text-slate-500 mt-1 uppercase tracking-wider font-bold">Business Suite</p>
+              </div>
+
+              <div className="flex-1 overflow-y-auto py-4">
+                <nav className="px-3 space-y-1">
+                  {topNav.map((item) => {
+                    const isActive = pathname === item.href;
+                    return (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={`flex items-center px-4 py-3 text-sm font-bold rounded-xl transition-all ${isActive
+                          ? "bg-slate-900 text-white shadow-lg shadow-slate-200"
+                          : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+                          }`}
+                      >
+                        <item.icon className={`h-5 w-5 mr-3 ${isActive ? "text-white" : "text-slate-400"}`} />
+                        {item.name}
+                      </Link>
+                    );
+                  })}
+                </nav>
+
+                <div className="mt-8 px-3">
+                  <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Quick Links</p>
+                    <div className="space-y-2">
+                      <Link
+                        href="/dashboard/invoices/new"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center text-sm font-medium text-slate-700 hover:text-slate-900"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Create New Invoice
+                      </Link>
+                      <Link
+                        href="/dashboard/clients/new"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center text-sm font-medium text-slate-700 hover:text-slate-900"
+                      >
+                        <Users className="h-4 w-4 mr-2" />
+                        Add New Client
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 border-t border-slate-100 bg-slate-50/50">
+                <div className="flex items-center space-x-3 mb-4">
+                  <Avatar className="h-10 w-10 border border-white shadow-sm">
+                    <AvatarImage src={profile?.avatar || undefined} />
+                    <AvatarFallback className="bg-slate-900 text-white font-bold">
+                      {profile ? getUserInitials(profile.name) : (user ? getUserInitials(user.name) : 'U')}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-slate-900 truncate">{profile?.name || user?.name}</p>
+                    <p className="text-xs text-slate-500 truncate">{profile?.email || user?.email}</p>
+                  </div>
+                </div>
+                <Button
+                  onClick={handleLogout}
+                  variant="ghost"
+                  className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50 rounded-xl"
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Sign Out
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Bottom Navigation for Mobile */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 lg:hidden px-0 pb-safe shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
+        <div className="flex items-center justify-between px-2 sm:px-6 h-[68px]">
+          {topNav.slice(0, 4).map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`flex flex-col items-center justify-center space-y-1 w-full h-full relative ${isActive ? "text-slate-900" : "text-slate-400"
+                  }`}
+              >
+                <item.icon className={`h-[22px] w-[22px] transition-colors ${isActive ? "text-slate-900" : "text-slate-400"}`} />
+                <span className="text-[10px] sm:text-[11px] font-bold mt-1 text-center w-full">{item.name}</span>
+                {isActive && <div className="absolute top-0 h-0.5 w-[70%] bg-slate-900 rounded-b-md" />}
+              </Link>
+            );
+          })}
+          <Link
+            href="/dashboard/settings"
+            className={`flex flex-col items-center justify-center space-y-1 w-full h-full relative ${pathname.includes('/settings') ? "text-slate-900" : "text-slate-400"
+              }`}
+          >
+            <Settings className={`h-[22px] w-[22px] transition-colors ${pathname.includes('/settings') ? "text-slate-900" : "text-slate-400"}`} />
+            <span className="text-[10px] sm:text-[11px] font-bold mt-1 text-center w-full">Settings</span>
+            {pathname.includes('/settings') && <div className="absolute top-0 h-0.5 w-[70%] bg-slate-900 rounded-b-md" />}
+          </Link>
+        </div>
+      </div>
+
       {/* Page content */}
-      <main className="pt-36 px-6 pb-12 max-w-[100rem] mx-auto">
+      <main className="pt-24 lg:pt-36 px-4 sm:px-6 pb-24 lg:pb-12 max-w-[100rem] mx-auto">
         {children}
       </main>
 

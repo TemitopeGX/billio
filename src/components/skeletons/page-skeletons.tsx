@@ -7,7 +7,7 @@ export function SettingsPageSkeleton() {
             {/* Page Header Skeleton */}
             <div>
                 <Skeleton className="h-9 w-48 mb-2" />
-                <Skeleton className="h-6 w-96" />
+                <Skeleton className="h-6 w-3/4 sm:w-96 max-w-full" />
             </div>
 
             <div className="flex flex-col lg:flex-row gap-8">
@@ -56,17 +56,17 @@ export function ExpensesPageSkeleton() {
         <div className="p-0 space-y-8 max-w-[100rem] mx-auto">
             {/* Page Header Skeleton */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
+                <div className="w-full">
                     <Skeleton className="h-9 w-48 mb-2" />
-                    <Skeleton className="h-6 w-96" />
+                    <Skeleton className="h-6 w-3/4 sm:w-96 max-w-full" />
                 </div>
                 <Skeleton className="h-12 w-full md:w-40 rounded-xl" />
             </div>
 
             {/* Stats Cards Skeleton */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
                 {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="bg-white rounded-2xl p-6 border border-slate-200">
+                    <div key={i} className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200">
                         <div className="flex items-center justify-between mb-4">
                             <Skeleton className="h-12 w-12 rounded-xl" />
                             <Skeleton className="h-6 w-16 rounded-full" />
@@ -129,17 +129,17 @@ export function InvoicesPageSkeleton() {
         <div className="p-0 space-y-8 max-w-[100rem] mx-auto">
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
+                <div className="w-full">
                     <Skeleton className="h-9 w-48 mb-2" />
-                    <Skeleton className="h-6 w-96" />
+                    <Skeleton className="h-6 w-3/4 sm:w-96 max-w-full" />
                 </div>
                 <Skeleton className="h-12 w-full md:w-40 rounded-xl" />
             </div>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="bg-white rounded-2xl p-6 border border-slate-200">
+                    <div key={i} className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200">
                         <Skeleton className="h-4 w-24 mb-2" />
                         <Skeleton className="h-8 w-32 mb-1" />
                         <Skeleton className="h-3 w-20" />
@@ -177,9 +177,9 @@ export function ClientsPageSkeleton() {
         <div className="p-0 space-y-8 max-w-[100rem] mx-auto">
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
+                <div className="w-full">
                     <Skeleton className="h-9 w-48 mb-2" />
-                    <Skeleton className="h-6 w-96" />
+                    <Skeleton className="h-6 w-3/4 sm:w-96 max-w-full" />
                 </div>
                 <Skeleton className="h-12 w-full md:w-40 rounded-xl" />
             </div>
@@ -218,9 +218,9 @@ export function PaymentsPageSkeleton() {
         <div className="p-0 space-y-8 max-w-[100rem] mx-auto">
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
+                <div className="w-full">
                     <Skeleton className="h-9 w-48 mb-2" />
-                    <Skeleton className="h-6 w-96" />
+                    <Skeleton className="h-6 w-3/4 sm:w-96 max-w-full" />
                 </div>
                 <Skeleton className="h-12 w-full md:w-40 rounded-xl" />
             </div>
@@ -260,9 +260,9 @@ export function ReportsPageSkeleton() {
     return (
         <div className="p-0 space-y-8 max-w-[100rem] mx-auto">
             {/* Header */}
-            <div>
+            <div className="w-full">
                 <Skeleton className="h-9 w-48 mb-2" />
-                <Skeleton className="h-6 w-96" />
+                <Skeleton className="h-6 w-3/4 sm:w-96 max-w-full" />
             </div>
 
             {/* Date Range Selector */}

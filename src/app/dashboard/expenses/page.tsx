@@ -176,9 +176,9 @@ export default function ExpensesPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
         {/* Total Expenses */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-slate-50 rounded-xl">
               <Receipt className="h-6 w-6 text-slate-900" />
@@ -189,15 +189,15 @@ export default function ExpensesPage() {
               <span>{Math.abs(stats.monthlyTrend).toFixed(1)}%</span>
             </div>
           </div>
-          <div>
-            <p className="text-sm font-medium text-slate-500 mb-1">Total Expenses</p>
-            <p className="text-3xl font-bold text-slate-900">{formatCurrency(stats?.totalExpenses || 0)}</p>
-            <p className="text-xs text-slate-400 mt-1">All time</p>
+          <div className="mt-auto space-y-0.5 sm:space-y-1">
+            <p className="text-[10px] sm:text-sm font-medium text-slate-500 line-clamp-1">Total Expenses</p>
+            <p className="text-lg xs:text-xl sm:text-3xl font-bold text-slate-900 truncate">{formatCurrency(stats?.totalExpenses || 0)}</p>
+            <p className="text-[9px] sm:text-xs text-slate-400 line-clamp-1">All time</p>
           </div>
         </div>
 
         {/* This Month */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-slate-50 rounded-xl">
               <Calendar className="h-6 w-6 text-slate-900" />
@@ -207,15 +207,15 @@ export default function ExpensesPage() {
               <span>This Month</span>
             </div>
           </div>
-          <div>
-            <p className="text-sm font-medium text-slate-500 mb-1">This Month</p>
-            <p className="text-3xl font-bold text-slate-900">{formatCurrency(stats?.totalThisMonth || 0)}</p>
-            <p className="text-xs text-slate-400 mt-1">Current month</p>
+          <div className="mt-auto space-y-0.5 sm:space-y-1">
+            <p className="text-[10px] sm:text-sm font-medium text-slate-500 line-clamp-1">This Month</p>
+            <p className="text-lg xs:text-xl sm:text-3xl font-bold text-slate-900 truncate">{formatCurrency(stats?.totalThisMonth || 0)}</p>
+            <p className="text-[9px] sm:text-xs text-slate-400 line-clamp-1">Current month</p>
           </div>
         </div>
 
         {/* Average Expense */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-slate-50 rounded-xl">
               <DollarSign className="h-6 w-6 text-slate-900" />
@@ -225,15 +225,15 @@ export default function ExpensesPage() {
               <span>Average</span>
             </div>
           </div>
-          <div>
-            <p className="text-sm font-medium text-slate-500 mb-1">Average Expense</p>
-            <p className="text-3xl font-bold text-slate-900">{formatCurrency(stats?.averageExpense || 0)}</p>
-            <p className="text-xs text-slate-400 mt-1">Per expense</p>
+          <div className="mt-auto space-y-0.5 sm:space-y-1">
+            <p className="text-[10px] sm:text-sm font-medium text-slate-500 line-clamp-1">Average Expense</p>
+            <p className="text-lg xs:text-xl sm:text-3xl font-bold text-slate-900 truncate">{formatCurrency(stats?.averageExpense || 0)}</p>
+            <p className="text-[9px] sm:text-xs text-slate-400 line-clamp-1">Per expense</p>
           </div>
         </div>
 
         {/* Total Count */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-slate-50 rounded-xl">
               <FileText className="h-6 w-6 text-slate-900" />
@@ -243,10 +243,10 @@ export default function ExpensesPage() {
               <span>Total</span>
             </div>
           </div>
-          <div>
-            <p className="text-sm font-medium text-slate-500 mb-1">Total Count</p>
-            <p className="text-3xl font-bold text-slate-900">{expenses?.length || 0}</p>
-            <p className="text-xs text-slate-400 mt-1">Expenses</p>
+          <div className="mt-auto space-y-0.5 sm:space-y-1">
+            <p className="text-[10px] sm:text-sm font-medium text-slate-500 line-clamp-1">Total Count</p>
+            <p className="text-lg xs:text-xl sm:text-3xl font-bold text-slate-900 truncate">{expenses?.length || 0}</p>
+            <p className="text-[9px] sm:text-xs text-slate-400 line-clamp-1">Expenses</p>
           </div>
         </div>
       </div>
@@ -379,11 +379,11 @@ export default function ExpensesPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-b border-slate-100 hover:bg-transparent">
-                    <TableHead className="font-bold text-slate-900 py-4 pl-6">Date</TableHead>
-                    <TableHead className="font-bold text-slate-900 py-4">Category</TableHead>
-                    <TableHead className="font-bold text-slate-900 py-4">Description</TableHead>
-                    <TableHead className="text-right font-bold text-slate-900 py-4">Amount</TableHead>
-                    <TableHead className="text-center font-bold text-slate-900 py-4 pr-6">Actions</TableHead>
+                    <TableHead className="font-bold text-slate-900 py-3 sm:py-4 pl-4 sm:pl-6 text-xs sm:text-sm whitespace-nowrap">Date</TableHead>
+                    <TableHead className="font-bold text-slate-900 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">Category</TableHead>
+                    <TableHead className="font-bold text-slate-900 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">Description</TableHead>
+                    <TableHead className="text-right font-bold text-slate-900 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">Amount</TableHead>
+                    <TableHead className="text-center font-bold text-slate-900 py-3 sm:py-4 pr-4 sm:pr-6 text-xs sm:text-sm whitespace-nowrap">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -391,25 +391,25 @@ export default function ExpensesPage() {
                     if (!expense) return null;
                     return (
                       <TableRow key={expense.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                        <TableCell className="py-4 pl-6">
+                        <TableCell className="py-3 sm:py-4 pl-4 sm:pl-6 whitespace-nowrap">
                           <div className="flex items-center space-x-2">
                             <Calendar className="h-4 w-4 text-slate-400" />
-                            <p className="text-slate-700 font-medium">{formatDate(expense.date)}</p>
+                            <p className="text-slate-700 font-medium text-xs sm:text-sm">{formatDate(expense.date)}</p>
                           </div>
                         </TableCell>
-                        <TableCell className="py-4">
-                          <Badge className={`${getCategoryColor(expense.category)} rounded-full px-3 py-1 text-xs font-bold shadow-none`}>
+                        <TableCell className="py-3 sm:py-4 whitespace-nowrap">
+                          <Badge className={`${getCategoryColor(expense.category)} rounded-full px-3 py-1 text-[10px] sm:text-xs font-bold shadow-none`}>
                             <Tag className="h-3 w-3 mr-1" />
                             {expense.category}
                           </Badge>
                         </TableCell>
-                        <TableCell className="py-4">
-                          <p className="text-slate-600 font-medium">{expense.description || 'No description'}</p>
+                        <TableCell className="py-3 sm:py-4 whitespace-nowrap">
+                          <p className="text-slate-600 font-medium text-xs sm:text-sm truncate max-w-[150px] sm:max-w-none">{expense.description || 'No description'}</p>
                         </TableCell>
-                        <TableCell className="text-right py-4">
-                          <p className="font-bold text-slate-900">{formatCurrency(Number(expense.amount) || 0)}</p>
+                        <TableCell className="text-right py-3 sm:py-4 whitespace-nowrap">
+                          <p className="font-bold text-slate-900 text-xs sm:text-sm">{formatCurrency(Number(expense.amount) || 0)}</p>
                         </TableCell>
-                        <TableCell className="text-center py-4 pr-6">
+                        <TableCell className="text-center py-3 sm:py-4 pr-4 sm:pr-6 whitespace-nowrap">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button variant="ghost" className="h-8 w-8 p-0 text-slate-400 hover:text-slate-900">

@@ -15,7 +15,7 @@ export default function FloatingFeedbackButton({ className = "" }: FloatingFeedb
 
   return (
     <>
-      <div className={`fixed bottom-8 right-8 z-50 ${className}`}>
+      <div className={`fixed bottom-24 lg:bottom-8 right-4 lg:right-8 z-50 ${className}`}>
         <Button
           onClick={() => setIsModalOpen(true)}
           onMouseEnter={() => setIsHovered(true)}

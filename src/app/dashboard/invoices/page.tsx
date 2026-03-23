@@ -145,13 +145,13 @@ export default function InvoicesPage() {
   return (
     <div className="p-0 space-y-8 max-w-[100rem] mx-auto">
       {/* Page Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">Invoices</h1>
-          <p className="text-slate-500 text-lg">Manage and track all your invoices in one place.</p>
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="text-center sm:text-left">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mb-1 sm:mb-2 tracking-tight">Invoices</h1>
+          <p className="text-slate-500 text-base sm:text-lg text-balance">Manage and track all your invoices in one place.</p>
         </div>
-        <Link href="/dashboard/invoices/new">
-          <Button className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-6 py-3 font-bold shadow-none transition-all">
+        <Link href="/dashboard/invoices/new" className="w-full sm:w-auto">
+          <Button className="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-6 py-3 font-bold shadow-none transition-all">
             <Plus className="h-5 w-5 mr-2" />
             New Invoice
           </Button>
@@ -159,96 +159,96 @@ export default function InvoicesPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
         {/* Total Invoices */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-slate-50 rounded-xl">
-              <Receipt className="h-6 w-6 text-slate-900" />
+        <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <div className="p-2 sm:p-3 bg-slate-50 rounded-xl">
+              <Receipt className="h-4 w-4 sm:h-6 sm:w-6 text-slate-900" />
             </div>
-            <div className="flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-600">
-              <TrendingUp className="h-3 w-3" />
+            <div className="flex items-center space-x-1 px-2 py-1 rounded-full text-[9px] sm:text-xs font-bold bg-emerald-50 text-emerald-600">
+              <TrendingUp className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
               <span>+12%</span>
             </div>
           </div>
-          <div>
-            <p className="text-sm font-medium text-slate-500 mb-1">Total Invoices</p>
-            <p className="text-3xl font-bold text-slate-900">{isLoading ? '…' : invoices.length}</p>
+          <div className="mt-auto space-y-0.5 sm:space-y-1">
+            <p className="text-[10px] sm:text-sm font-medium text-slate-500 line-clamp-1">Total Invoices</p>
+            <p className="text-lg xs:text-xl sm:text-3xl font-bold text-slate-900 truncate">{isLoading ? '…' : invoices.length}</p>
           </div>
         </div>
 
         {/* Total Amount */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-slate-50 rounded-xl">
-              <DollarSign className="h-6 w-6 text-slate-900" />
+        <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <div className="p-2 sm:p-3 bg-slate-50 rounded-xl">
+              <DollarSign className="h-4 w-4 sm:h-6 sm:w-6 text-slate-900" />
             </div>
-            <div className="flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-600">
-              <ArrowUp className="h-3 w-3" />
+            <div className="flex items-center space-x-1 px-2 py-1 rounded-full text-[9px] sm:text-xs font-bold bg-emerald-50 text-emerald-600">
+              <ArrowUp className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
               <span>+8%</span>
             </div>
           </div>
-          <div>
-            <p className="text-sm font-medium text-slate-500 mb-1">Total Amount</p>
-            <p className="text-3xl font-bold text-slate-900">
+          <div className="mt-auto space-y-0.5 sm:space-y-1">
+            <p className="text-[10px] sm:text-sm font-medium text-slate-500 line-clamp-1">Total Amount</p>
+            <p className="text-lg xs:text-xl sm:text-3xl font-bold text-slate-900 truncate">
               {isLoading ? '…' : formatCurrency(invoices.reduce((sum: number, inv: any) => sum + Number(inv.amount || 0), 0))}
             </p>
           </div>
         </div>
 
         {/* Paid Invoices */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-slate-50 rounded-xl">
-              <CheckCircle className="h-6 w-6 text-slate-900" />
+        <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <div className="p-2 sm:p-3 bg-slate-50 rounded-xl">
+              <CheckCircle className="h-4 w-4 sm:h-6 sm:w-6 text-slate-900" />
             </div>
-            <div className="flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-600">
-              <ArrowUp className="h-3 w-3" />
+            <div className="flex items-center space-x-1 px-2 py-1 rounded-full text-[9px] sm:text-xs font-bold bg-emerald-50 text-emerald-600">
+              <ArrowUp className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
               <span>+15%</span>
             </div>
           </div>
-          <div>
-            <p className="text-sm font-medium text-slate-500 mb-1">Paid Invoices</p>
-            <p className="text-3xl font-bold text-slate-900">{isLoading ? '…' : invoices.filter((inv: any) => (inv.status || '').toLowerCase() === 'paid').length}</p>
+          <div className="mt-auto space-y-0.5 sm:space-y-1">
+            <p className="text-[10px] sm:text-sm font-medium text-slate-500 line-clamp-1">Paid Invoices</p>
+            <p className="text-lg xs:text-xl sm:text-3xl font-bold text-slate-900 truncate">{isLoading ? '…' : invoices.filter((inv: any) => (inv.status || '').toLowerCase() === 'paid').length}</p>
           </div>
         </div>
 
         {/* Overdue Invoices */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-red-50 rounded-xl">
-              <AlertTriangle className="h-6 w-6 text-red-600" />
+        <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <div className="p-2 sm:p-3 bg-red-50 rounded-xl">
+              <AlertTriangle className="h-4 w-4 sm:h-6 sm:w-6 text-red-600" />
             </div>
-            <div className="flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-600">
-              <ArrowDown className="h-3 w-3" />
+            <div className="flex items-center space-x-1 px-2 py-1 rounded-full text-[9px] sm:text-xs font-bold bg-red-50 text-red-600">
+              <ArrowDown className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
               <span>-3%</span>
             </div>
           </div>
-          <div>
-            <p className="text-sm font-medium text-slate-500 mb-1">Overdue</p>
-            <p className="text-3xl font-bold text-slate-900">{isLoading ? '…' : invoices.filter((inv: any) => (inv.status || '').toLowerCase() === 'overdue').length}</p>
+          <div className="mt-auto space-y-0.5 sm:space-y-1">
+            <p className="text-[10px] sm:text-sm font-medium text-slate-500 line-clamp-1">Overdue</p>
+            <p className="text-lg xs:text-xl sm:text-3xl font-bold text-slate-900 truncate">{isLoading ? '…' : invoices.filter((inv: any) => (inv.status || '').toLowerCase() === 'overdue').length}</p>
           </div>
         </div>
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+      <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm">
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="flex-1">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
               <Input
-                placeholder="Search invoices by client name or invoice number..."
+                placeholder="Search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-12 pr-4 py-6 bg-slate-50 border-slate-200 rounded-xl focus:ring-0 focus:border-slate-900 focus:bg-white transition-all text-sm"
               />
             </div>
           </div>
-          <div className="flex gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-48 bg-white border-slate-200 rounded-xl h-full font-medium">
-                <SelectValue placeholder="Filter by status" />
+              <SelectTrigger className="w-full sm:w-48 bg-white border-slate-200 rounded-xl h-12 font-medium">
+                <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Status</SelectItem>
@@ -258,9 +258,9 @@ export default function InvoicesPage() {
                 <SelectItem value="overdue">Overdue</SelectItem>
               </SelectContent>
             </Select>
-            <Button variant="outline" className="h-full border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl px-6 font-medium">
+            <Button variant="outline" className="h-12 border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl px-6 font-medium">
               <Filter className="h-4 w-4 mr-2" />
-              More Filters
+              Filters
             </Button>
           </div>
         </div>
@@ -305,40 +305,40 @@ export default function InvoicesPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-b border-slate-100 hover:bg-transparent">
-                    <TableHead className="font-bold text-slate-900 py-4 pl-6">Invoice</TableHead>
-                    <TableHead className="font-bold text-slate-900 py-4">Client</TableHead>
-                    <TableHead className="font-bold text-slate-900 py-4">Amount</TableHead>
-                    <TableHead className="font-bold text-slate-900 py-4">Status</TableHead>
-                    <TableHead className="font-bold text-slate-900 py-4">Issue Date</TableHead>
-                    <TableHead className="font-bold text-slate-900 py-4">Due Date</TableHead>
-                    <TableHead className="font-bold text-slate-900 py-4 pr-6 text-right">Actions</TableHead>
+                    <TableHead className="font-bold text-slate-900 py-3 sm:py-4 pl-4 sm:pl-6 text-xs sm:text-sm whitespace-nowrap">Invoice</TableHead>
+                    <TableHead className="font-bold text-slate-900 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">Client</TableHead>
+                    <TableHead className="font-bold text-slate-900 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">Amount</TableHead>
+                    <TableHead className="font-bold text-slate-900 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">Status</TableHead>
+                    <TableHead className="font-bold text-slate-900 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">Issue Date</TableHead>
+                    <TableHead className="font-bold text-slate-900 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">Due Date</TableHead>
+                    <TableHead className="font-bold text-slate-900 py-3 sm:py-4 pr-4 sm:pr-6 text-right text-xs sm:text-sm whitespace-nowrap">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredInvoices.map((inv: any) => (
                     <TableRow key={inv.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                      <TableCell className="py-4 pl-6">
+                      <TableCell className="py-3 sm:py-4 pl-4 sm:pl-6 whitespace-nowrap">
                         <div>
-                          <p className="font-bold text-slate-900">{inv.number || inv.id}</p>
-                          <p className="text-sm text-slate-500">{inv.client?.email || '—'}</p>
+                          <p className="font-bold text-slate-900 text-xs sm:text-sm">{inv.number || inv.id}</p>
+                          <p className="text-[10px] sm:text-xs text-slate-500">{inv.client?.email || '—'}</p>
                         </div>
                       </TableCell>
-                      <TableCell className="py-4">
-                        <p className="font-medium text-slate-700">{inv.client?.name || '—'}</p>
+                      <TableCell className="py-3 sm:py-4 whitespace-nowrap">
+                        <p className="font-medium text-slate-700 text-xs sm:text-sm">{inv.client?.name || '—'}</p>
                       </TableCell>
-                      <TableCell className="py-4">
-                        <p className="font-bold text-slate-900">{formatCurrency(inv.amount)}</p>
+                      <TableCell className="py-3 sm:py-4 whitespace-nowrap">
+                        <p className="font-bold text-slate-900 text-xs sm:text-sm">{formatCurrency(inv.amount)}</p>
                       </TableCell>
-                      <TableCell className="py-4">
+                      <TableCell className="py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm">
                         {getStatusBadge(inv.status)}
                       </TableCell>
-                      <TableCell className="py-4">
-                        <p className="text-slate-600 font-medium">{formatDate(inv.issuedAt)}</p>
+                      <TableCell className="py-3 sm:py-4 whitespace-nowrap">
+                        <p className="text-slate-600 font-medium text-xs sm:text-sm">{formatDate(inv.issuedAt)}</p>
                       </TableCell>
-                      <TableCell className="py-4">
-                        <p className="text-slate-600 font-medium">{formatDate(inv.dueAt)}</p>
+                      <TableCell className="py-3 sm:py-4 whitespace-nowrap">
+                        <p className="text-slate-600 font-medium text-xs sm:text-sm">{formatDate(inv.dueAt)}</p>
                       </TableCell>
-                      <TableCell className="py-4 pr-6 text-right">
+                      <TableCell className="py-3 sm:py-4 pr-4 sm:pr-6 text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-900">

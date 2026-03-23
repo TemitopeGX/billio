@@ -687,9 +687,9 @@ export default function SettingsPage() {
   return (
     <div className="p-0 space-y-8 max-w-[100rem] mx-auto">
       {/* Page Header */}
-      <div>
-        <h1 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">Settings</h1>
-        <p className="text-slate-500 text-lg">Manage your account and application preferences</p>
+      <div className="text-center sm:text-left">
+        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mb-1 sm:mb-2 tracking-tight">Settings</h1>
+        <p className="text-slate-500 text-base sm:text-lg">Manage your account and preferences</p>
         {autoSaveStatus && (
           <div className="mt-2 text-sm text-emerald-600 bg-emerald-50 px-3 py-1 rounded-lg inline-block font-medium">
             ✓ {autoSaveStatus}
@@ -699,7 +699,7 @@ export default function SettingsPage() {
 
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Sidebar Navigation */}
-        <div className="lg:w-64 space-y-2">
+        <div className="lg:w-64 flex lg:flex-col overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 gap-2 no-scrollbar scroll-smooth snap-x">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
@@ -709,13 +709,13 @@ export default function SettingsPage() {
                   setActiveTab(tab.id as any);
                   router.push(`/dashboard/settings?tab=${tab.id}`);
                 }}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left transition-all duration-200 font-medium ${activeTab === tab.id
-                  ? 'bg-slate-900 text-white shadow-md'
+                className={`flex items-center space-x-2 sm:space-x-3 px-4 py-2.5 sm:py-3 rounded-xl text-left transition-all duration-200 font-bold whitespace-nowrap snap-start ${activeTab === tab.id
+                  ? 'bg-slate-900 text-white shadow-lg shadow-slate-200'
                   : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
                   }`}
               >
-                <Icon className="h-5 w-5" />
-                <span>{tab.label}</span>
+                <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="text-sm sm:text-base">{tab.label}</span>
               </button>
             );
           })}
@@ -1558,7 +1558,7 @@ export default function SettingsPage() {
                         const interval = plan.billing_period || plan.interval;
 
                         return (
-                          <div key={plan.id} className={`border rounded-2xl p-6 relative flex flex-col ${isPopular ? 'border-2 border-slate-900 bg-white shadow-lg scale-105 z-10' : 'border-slate-200 bg-slate-50'}`}>
+                          <div key={plan.id} className={`border rounded-2xl p-6 relative flex flex-col ${isPopular ? 'border-2 border-slate-900 bg-white shadow-lg lg:scale-105 z-10' : 'border-slate-200 bg-slate-50'}`}>
                             {isPopular && <div className="absolute top-0 right-0 left-0 mx-auto w-max -mt-3 bg-slate-900 text-white text-xs font-bold px-3 py-1 rounded-full">MOST POPULAR</div>}
 
                             <div className="mb-4">
