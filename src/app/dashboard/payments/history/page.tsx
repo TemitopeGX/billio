@@ -62,9 +62,11 @@ export default function PaymentsHistoryPage() {
   return (
     <div className="p-0 space-y-8 max-w-[100rem] mx-auto">
       {/* Page Header */}
-      <div>
-        <h1 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">Payment History</h1>
-        <p className="text-slate-500 text-lg">Track and manage your transaction history.</p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mb-1 sm:mb-2 tracking-tight text-center sm:text-left">Payment History</h1>
+          <p className="text-slate-500 text-sm sm:text-lg text-center sm:text-left">Track and manage your transaction history.</p>
+        </div>
       </div>
 
       {/* Filters and Search */}
@@ -101,12 +103,12 @@ export default function PaymentsHistoryPage() {
 
       {/* Payments Table */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-slate-100 flex justify-between items-center">
+        <div className="p-4 sm:p-6 border-b border-slate-100 flex justify-between items-center">
           <div>
-            <h3 className="text-xl font-bold text-slate-900">Transactions</h3>
-            <p className="text-slate-500 font-medium mt-1">Showing latest transactions</p>
+            <h3 className="text-lg sm:text-xl font-bold text-slate-900">Transactions</h3>
+            <p className="text-slate-500 font-medium mt-1 text-xs sm:text-sm">Showing latest transactions</p>
           </div>
-          <Button variant="ghost" size="sm" onClick={fetchPayments} className="text-slate-500">
+          <Button variant="ghost" size="sm" onClick={fetchPayments} className="text-slate-500 h-8 sm:h-10 text-xs sm:text-sm">
             Refresh
           </Button>
         </div>
@@ -124,39 +126,39 @@ export default function PaymentsHistoryPage() {
             <Table>
               <TableHeader>
                 <TableRow className="border-b border-slate-100 hover:bg-transparent">
-                  <TableHead className="font-bold text-slate-900 py-4 pl-6">Reference</TableHead>
-                  <TableHead className="font-bold text-slate-900 py-4">Customer</TableHead>
-                  <TableHead className="font-bold text-slate-900 py-4">Date</TableHead>
-                  <TableHead className="font-bold text-slate-900 py-4">Status</TableHead>
-                  <TableHead className="font-bold text-slate-900 py-4 text-right">Amount</TableHead>
-                  <TableHead className="font-bold text-slate-900 py-4 pr-6 text-right">Actions</TableHead>
+                  <TableHead className="font-bold text-slate-900 py-3 sm:py-4 pl-4 sm:pl-6 text-xs sm:text-sm whitespace-nowrap">Reference</TableHead>
+                  <TableHead className="font-bold text-slate-900 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">Customer</TableHead>
+                  <TableHead className="font-bold text-slate-900 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">Date</TableHead>
+                  <TableHead className="font-bold text-slate-900 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">Status</TableHead>
+                  <TableHead className="font-bold text-slate-900 py-3 sm:py-4 text-right text-xs sm:text-sm whitespace-nowrap">Amount</TableHead>
+                  <TableHead className="font-bold text-slate-900 py-3 sm:py-4 pr-4 sm:pr-6 text-right text-xs sm:text-sm whitespace-nowrap">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {payments.map((payment) => (
                   <TableRow key={payment.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                    <TableCell className="py-4 pl-6 font-medium text-slate-900">
-                      <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-slate-50 rounded-lg">
+                    <TableCell className="py-3 sm:py-4 pl-4 sm:pl-6 font-medium text-slate-900 whitespace-nowrap">
+                      <div className="flex items-center space-x-2 sm:space-x-3">
+                        <div className="p-1.5 sm:p-2 bg-slate-50 rounded-lg shrink-0">
                           <CreditCard className="h-4 w-4 text-slate-900" />
                         </div>
-                        <span className="font-mono text-sm">{payment.paymentReference || 'N/A'}</span>
+                        <span className="font-mono text-xs sm:text-sm truncate max-w-[100px] sm:max-w-none">{payment.paymentReference || 'N/A'}</span>
                       </div>
                     </TableCell>
-                    <TableCell className="py-4 text-slate-600 font-medium">{payment.clientName}</TableCell>
-                    <TableCell className="py-4 text-slate-500">{new Date(payment.createdAt).toLocaleDateString()}</TableCell>
-                    <TableCell className="py-4">
+                    <TableCell className="py-3 sm:py-4 text-slate-600 font-medium text-xs sm:text-sm whitespace-nowrap">{payment.clientName}</TableCell>
+                    <TableCell className="py-3 sm:py-4 text-slate-500 text-xs sm:text-sm whitespace-nowrap">{new Date(payment.createdAt).toLocaleDateString()}</TableCell>
+                    <TableCell className="py-3 sm:py-4 whitespace-nowrap">
                       {getStatusBadge(payment.status)}
                     </TableCell>
-                    <TableCell className="py-4 text-right font-bold text-slate-900">
+                    <TableCell className="py-3 sm:py-4 text-right font-bold text-slate-900 text-xs sm:text-sm whitespace-nowrap">
                       ₦{Number(payment.paymentAmount).toLocaleString()}
                     </TableCell>
-                    <TableCell className="py-4 pr-6 text-right">
+                    <TableCell className="py-3 sm:py-4 pr-4 sm:pr-6 text-right whitespace-nowrap">
                       {(payment.status === 'paid' || payment.status === 'verified') && (
                         <Link href={`/dashboard/payments/receipts/${payment.id}`}>
-                          <Button variant="ghost" size="sm" className="text-blue-600 hover:text-blue-700 hover:bg-blue-50">
-                            <FileText className="h-4 w-4 mr-2" />
-                            Receipt
+                          <Button variant="ghost" size="sm" className="h-8 p-0 sm:p-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 text-xs sm:text-sm">
+                            <FileText className="h-4 w-4 sm:mr-2" />
+                            <span className="hidden sm:inline">Receipt</span>
                           </Button>
                         </Link>
                       )}

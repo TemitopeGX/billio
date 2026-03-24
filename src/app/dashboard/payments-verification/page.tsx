@@ -191,17 +191,17 @@ export default function PaymentVerificationPage() {
     };
 
     return (
-        <div className="p-8 space-y-8">
+        <div className="p-0 space-y-6 sm:space-y-8 max-w-[100rem] mx-auto">
             {/* Page Header */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-4xl font-bold text-foreground mb-2">Payment Verification</h1>
-                    <p className="text-muted-foreground text-lg">Review and verify payments from your clients.</p>
+                    <h1 className="text-2xl sm:text-4xl font-black text-slate-900 mb-2 tracking-tight">Payment Verification</h1>
+                    <p className="text-slate-500 text-sm sm:text-lg font-medium">Review and verify payments from your clients.</p>
                 </div>
                 <Button
                     onClick={() => refetch()}
                     variant="outline"
-                    className="border-border text-foreground hover:bg-muted rounded-xl px-4 py-3"
+                    className="border-slate-200 text-slate-900 hover:bg-slate-50 rounded-xl px-4 py-3 font-bold w-full sm:w-auto"
                 >
                     <RefreshCw className="h-4 w-4 mr-2" />
                     Refresh
@@ -209,90 +209,90 @@ export default function PaymentVerificationPage() {
             </div>
 
             {/* Stats Cards - Modern Design */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
                 {/* Total Payments */}
-                <div className="bg-card rounded-2xl p-6 card-shadow-sm">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="p-3 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/20 dark:to-blue-900/20 rounded-xl">
-                            <Receipt className="h-6 w-6 text-blue-600" />
+                <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                    <div className="flex items-center justify-between mb-3 sm:mb-4">
+                        <div className="p-2.5 sm:p-3 bg-slate-50 rounded-xl">
+                            <Receipt className="h-5 w-5 sm:h-6 sm:w-6 text-slate-900" />
                         </div>
-                        <div className="flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                            <TrendingUp className="h-3 w-3" />
+                        <div className="flex items-center space-x-1 px-2 py-1 rounded-full text-[10px] sm:text-xs font-bold bg-emerald-50 text-emerald-600">
+                            <TrendingUp className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
                             <span>+12%</span>
                         </div>
                     </div>
-                    <div>
-                        <p className="text-sm font-medium text-muted-foreground mb-1">Total Payments</p>
-                        <p className="text-3xl font-bold text-foreground">{statsLoading ? '…' : stats.total}</p>
+                    <div className="mt-auto space-y-0.5 sm:space-y-1">
+                        <p className="text-[10px] sm:text-sm font-medium text-slate-500 line-clamp-1">Total Payments</p>
+                        <p className="text-lg xs:text-xl sm:text-3xl font-bold text-slate-900 truncate">{statsLoading ? '…' : stats.total}</p>
                     </div>
                 </div>
 
                 {/* Pending Verification */}
-                <div className="bg-card rounded-2xl p-6 card-shadow-sm">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="p-3 bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-950/20 dark:to-amber-900/20 rounded-xl">
-                            <Clock className="h-6 w-6 text-amber-600" />
+                <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                    <div className="flex items-center justify-between mb-3 sm:mb-4">
+                        <div className="p-2.5 sm:p-3 bg-amber-50 rounded-xl">
+                            <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-amber-600" />
                         </div>
                         {stats.pending > 0 && (
-                            <div className="flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
+                            <div className="hidden sm:flex items-center space-x-1 px-2 py-1 rounded-full text-[10px] sm:text-xs font-bold bg-amber-100 text-amber-700">
                                 <span>Action needed</span>
                             </div>
                         )}
                     </div>
-                    <div>
-                        <p className="text-sm font-medium text-muted-foreground mb-1">Pending Verification</p>
-                        <p className="text-3xl font-bold text-foreground">{statsLoading ? '…' : stats.pending}</p>
+                    <div className="mt-auto space-y-0.5 sm:space-y-1">
+                        <p className="text-[10px] sm:text-sm font-medium text-slate-500 line-clamp-1">Pending</p>
+                        <p className="text-lg xs:text-xl sm:text-3xl font-bold text-slate-900 truncate">{statsLoading ? '…' : stats.pending}</p>
                     </div>
                 </div>
 
                 {/* Verified Payments */}
-                <div className="bg-card rounded-2xl p-6 card-shadow-sm">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="p-3 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/20 dark:to-green-900/20 rounded-xl">
-                            <CheckCircle className="h-6 w-6 text-green-600" />
+                <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                    <div className="flex items-center justify-between mb-3 sm:mb-4">
+                        <div className="p-2.5 sm:p-3 bg-emerald-50 rounded-xl">
+                            <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-600" />
                         </div>
-                        <div className="flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                            <ArrowUp className="h-3 w-3" />
+                        <div className="flex items-center space-x-1 px-2 py-1 rounded-full text-[10px] sm:text-xs font-bold bg-emerald-100 text-emerald-700">
+                            <ArrowUp className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
                             <span>+8%</span>
                         </div>
                     </div>
-                    <div>
-                        <p className="text-sm font-medium text-muted-foreground mb-1">Verified</p>
-                        <p className="text-3xl font-bold text-foreground">{statsLoading ? '…' : stats.paid}</p>
+                    <div className="mt-auto space-y-0.5 sm:space-y-1">
+                        <p className="text-[10px] sm:text-sm font-medium text-slate-500 line-clamp-1">Verified</p>
+                        <p className="text-lg xs:text-xl sm:text-3xl font-bold text-slate-900 truncate">{statsLoading ? '…' : stats.paid}</p>
                     </div>
                 </div>
 
                 {/* Total Amount */}
-                <div className="bg-card rounded-2xl p-6 card-shadow-sm">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="p-3 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/20 dark:to-purple-900/20 rounded-xl">
-                            <DollarSign className="h-6 w-6 text-purple-600" />
+                <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                    <div className="flex items-center justify-between mb-3 sm:mb-4">
+                        <div className="p-2.5 sm:p-3 bg-slate-50 rounded-xl">
+                            <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-slate-900" />
                         </div>
-                        <div className="flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                            <TrendingUp className="h-3 w-3" />
-                            <span>Revenue</span>
+                        <div className="flex items-center space-x-1 px-2 py-1 rounded-full text-[10px] sm:text-xs font-bold bg-emerald-50 text-emerald-600">
+                            <TrendingUp className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                            <span>Rev</span>
                         </div>
                     </div>
-                    <div>
-                        <p className="text-sm font-medium text-muted-foreground mb-1">Total Amount</p>
-                        <p className="text-3xl font-bold text-foreground">{statsLoading ? '…' : formatCurrency(stats.totalAmount)}</p>
+                    <div className="mt-auto space-y-0.5 sm:space-y-1">
+                        <p className="text-[10px] sm:text-sm font-medium text-slate-500 line-clamp-1">Total Amount</p>
+                        <p className="text-lg xs:text-xl sm:text-3xl font-bold text-slate-900 truncate">{statsLoading ? '…' : formatCurrency(stats.totalAmount)}</p>
                     </div>
                 </div>
             </div>
 
             {/* Payments Table */}
-            <div className="bg-card rounded-2xl card-shadow-sm">
-                <div className="p-6 border-b border-gray-100">
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div className="p-4 sm:p-6 border-b border-slate-100">
                     <div className="flex items-center justify-between">
                         <div>
-                            <h3 className="text-xl font-bold text-foreground">Payment Submissions</h3>
-                            <p className="text-muted-foreground mt-1">
+                            <h3 className="text-lg sm:text-xl font-bold text-slate-900">Payment Submissions</h3>
+                            <p className="text-slate-500 mt-1 font-medium text-xs sm:text-sm">
                                 {paymentsLoading ? 'Loading…' : paymentsError ? 'Failed to load' : `${payments.length} payment${payments.length !== 1 ? 's' : ''} found`}
                             </p>
                         </div>
                     </div>
                 </div>
-                <div className="p-6">
+                <div className="p-0">
                     {paymentsLoading ? (
                         <div className="py-16 text-center">
                             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
@@ -318,73 +318,71 @@ export default function PaymentVerificationPage() {
                         <div className="overflow-x-auto">
                             <Table>
                                 <TableHeader>
-                                    <TableRow className="border-b border-gray-100">
-                                        <TableHead className="font-semibold text-foreground py-4">Invoice</TableHead>
-                                        <TableHead className="font-semibold text-foreground py-4">Client</TableHead>
-                                        <TableHead className="font-semibold text-foreground py-4">Amount</TableHead>
-                                        <TableHead className="font-semibold text-foreground py-4">Method</TableHead>
-                                        <TableHead className="font-semibold text-foreground py-4">Date</TableHead>
-                                        <TableHead className="font-semibold text-foreground py-4">Status</TableHead>
-                                        <TableHead className="font-semibold text-foreground py-4">Actions</TableHead>
+                                    <TableRow className="border-b border-slate-100 hover:bg-transparent">
+                                        <TableHead className="font-bold text-slate-900 py-3 sm:py-4 pl-4 sm:pl-6 text-xs sm:text-sm whitespace-nowrap">Invoice</TableHead>
+                                        <TableHead className="font-bold text-slate-900 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">Client</TableHead>
+                                        <TableHead className="font-bold text-slate-900 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">Amount</TableHead>
+                                        <TableHead className="font-bold text-slate-900 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">Method</TableHead>
+                                        <TableHead className="font-bold text-slate-900 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">Date</TableHead>
+                                        <TableHead className="font-bold text-slate-900 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">Status</TableHead>
+                                        <TableHead className="font-bold text-slate-900 py-3 sm:py-4 pr-4 sm:pr-6 text-right text-xs sm:text-sm whitespace-nowrap">Actions</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {payments.map((payment) => (
-                                        <TableRow key={payment.id} className="border-b border-gray-50 hover:bg-muted transition-colors">
-                                            <TableCell className="py-4">
+                                        <TableRow key={payment.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+                                            <TableCell className="py-3 sm:py-4 pl-4 sm:pl-6 whitespace-nowrap">
                                                 <div className="flex items-center space-x-2">
-                                                    <FileText className="h-4 w-4 text-muted-foreground" />
-                                                    <span className="font-medium text-foreground">{payment.invoiceNumber}</span>
+                                                    <FileText className="h-4 w-4 text-slate-400" />
+                                                    <span className="font-bold text-slate-900 text-xs sm:text-sm">{payment.invoiceNumber}</span>
                                                 </div>
                                             </TableCell>
-                                            <TableCell className="py-4">
-                                                <p className="font-medium text-foreground">{payment.clientName || '—'}</p>
+                                            <TableCell className="py-3 sm:py-4 whitespace-nowrap">
+                                                <p className="font-medium text-slate-600 text-xs sm:text-sm">{payment.clientName || '—'}</p>
                                             </TableCell>
-                                            <TableCell className="py-4">
-                                                <p className="font-semibold text-foreground">{formatCurrency(payment.paymentAmount)}</p>
+                                            <TableCell className="py-3 sm:py-4 whitespace-nowrap">
+                                                <p className="font-bold text-slate-900 text-xs sm:text-sm">{formatCurrency(payment.paymentAmount)}</p>
                                             </TableCell>
-                                            <TableCell className="py-4">
-                                                <p className="text-foreground capitalize">{payment.paymentMethod?.replace('_', ' ')}</p>
+                                            <TableCell className="py-3 sm:py-4 whitespace-nowrap">
+                                                <p className="text-slate-600 capitalize text-xs sm:text-sm">{payment.paymentMethod?.replace('_', ' ')}</p>
                                             </TableCell>
-                                            <TableCell className="py-4">
-                                                <p className="text-foreground">{formatDate(payment.createdAt)}</p>
+                                            <TableCell className="py-3 sm:py-4 whitespace-nowrap">
+                                                <p className="text-slate-500 text-xs sm:text-sm">{formatDate(payment.createdAt)}</p>
                                             </TableCell>
-                                            <TableCell className="py-4">
+                                            <TableCell className="py-3 sm:py-4 whitespace-nowrap">
                                                 {getStatusBadge(payment.status)}
                                             </TableCell>
-                                            <TableCell className="py-4">
-                                                <div className="flex gap-2">
+                                            <TableCell className="py-3 sm:py-4 pr-4 sm:pr-6 text-right whitespace-nowrap">
+                                                <div className="flex gap-2 justify-end">
                                                     {/* View Details Button */}
                                                     <Button
                                                         size="sm"
-                                                        variant="outline"
-                                                        className="border-blue-200 text-blue-600 hover:bg-blue-50 rounded-lg px-3 py-1"
+                                                        variant="ghost"
+                                                        className="h-8 w-8 p-0 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-900"
                                                         onClick={() => setViewingPayment(payment)}
                                                     >
-                                                        <Eye className="h-4 w-4 mr-1" />
-                                                        Review
+                                                        <Eye className="h-4 w-4" />
                                                     </Button>
 
                                                     {payment.status === 'pending' && (
                                                         <>
                                                             <Button
                                                                 size="sm"
-                                                                className="bg-green-600 hover:bg-green-700 text-white rounded-lg px-3 py-1"
+                                                                variant="ghost"
+                                                                className="h-8 w-8 p-0 rounded-full hover:bg-emerald-50 text-emerald-600 hover:text-emerald-700"
                                                                 onClick={() => handleAction(payment, 'approve')}
                                                                 disabled={updateStatusMutation.isPending}
                                                             >
-                                                                <CheckCircle className="h-4 w-4 mr-1" />
-                                                                Verify
+                                                                <CheckCircle className="h-4 w-4" />
                                                             </Button>
                                                             <Button
                                                                 size="sm"
-                                                                variant="outline"
-                                                                className="border-red-200 text-red-600 hover:bg-red-50 rounded-lg px-3 py-1"
+                                                                variant="ghost"
+                                                                className="h-8 w-8 p-0 rounded-full hover:bg-red-50 text-red-600 hover:text-red-700"
                                                                 onClick={() => handleAction(payment, 'reject')}
                                                                 disabled={updateStatusMutation.isPending}
                                                             >
-                                                                <XCircle className="h-4 w-4 mr-1" />
-                                                                Reject
+                                                                <XCircle className="h-4 w-4" />
                                                             </Button>
                                                         </>
                                                     )}
@@ -403,15 +401,15 @@ export default function PaymentVerificationPage() {
             <Dialog open={!!viewingPayment} onOpenChange={(open) => !open && setViewingPayment(null)}>
                 <DialogContent className="sm:max-w-[600px] p-0 gap-0 overflow-hidden">
                     {/* Header */}
-                    <div className="px-6 py-4 border-b bg-muted/30">
+                    <div className="px-4 sm:px-6 py-4 border-b bg-slate-50/50">
                         <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-blue-100 rounded-lg">
-                                    <Receipt className="h-5 w-5 text-blue-600" />
+                            <div className="flex items-center gap-2 sm:gap-3">
+                                <div className="p-2 bg-slate-100 rounded-lg shrink-0">
+                                    <Receipt className="h-5 w-5 text-slate-900" />
                                 </div>
-                                <div>
-                                    <DialogTitle className="text-lg font-semibold">Payment Review</DialogTitle>
-                                    <DialogDescription className="text-sm">
+                                <div className="min-w-0">
+                                    <DialogTitle className="text-base sm:text-lg font-bold text-slate-900 truncate">Payment Review</DialogTitle>
+                                    <DialogDescription className="text-xs sm:text-sm text-slate-500 truncate">
                                         {viewingPayment?.invoiceNumber}
                                     </DialogDescription>
                                 </div>
@@ -421,32 +419,32 @@ export default function PaymentVerificationPage() {
                     </div>
 
                     {viewingPayment && (
-                        <div className="px-6 py-5 space-y-5 max-h-[60vh] overflow-y-auto">
+                        <div className="px-4 sm:px-6 py-5 space-y-5 max-h-[80vh] sm:max-h-[60vh] overflow-y-auto">
                             {/* Amount Highlight */}
-                            <div className="p-4 bg-green-50 rounded-xl border border-green-200 text-center">
-                                <p className="text-sm text-green-600 mb-1">Amount Paid</p>
-                                <p className="text-2xl font-bold text-green-700">{formatCurrency(viewingPayment.paymentAmount)}</p>
+                            <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center">
+                                <p className="text-xs sm:text-sm text-emerald-600 font-medium mb-1 uppercase tracking-wider">Amount Paid</p>
+                                <p className="text-2xl sm:text-3xl font-black text-slate-900">{formatCurrency(viewingPayment.paymentAmount)}</p>
                             </div>
 
                             {/* Payment Details */}
                             <div className="space-y-3">
-                                <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Payment Details</h4>
-                                <div className="bg-muted/50 rounded-xl p-4 space-y-3">
-                                    <div className="flex justify-between items-center py-2 border-b border-border/50">
-                                        <span className="text-sm text-muted-foreground">Client</span>
-                                        <span className="font-medium">{viewingPayment.clientName || '—'}</span>
+                                <h4 className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest pl-1">Payment Details</h4>
+                                <div className="bg-slate-50 rounded-2xl p-4 space-y-4">
+                                    <div className="flex justify-between items-center py-1 border-b border-slate-100 pb-3">
+                                        <span className="text-xs sm:text-sm text-slate-500 font-medium">Client</span>
+                                        <span className="text-xs sm:text-sm font-bold text-slate-900">{viewingPayment.clientName || '—'}</span>
                                     </div>
-                                    <div className="flex justify-between items-center py-2 border-b border-border/50">
-                                        <span className="text-sm text-muted-foreground">Payment Method</span>
-                                        <span className="font-medium capitalize">{viewingPayment.paymentMethod?.replace('_', ' ')}</span>
+                                    <div className="flex justify-between items-center py-1 border-b border-slate-100 pb-3">
+                                        <span className="text-xs sm:text-sm text-slate-500 font-medium">Payment Method</span>
+                                        <span className="text-xs sm:text-sm font-bold text-slate-900 capitalize">{viewingPayment.paymentMethod?.replace('_', ' ')}</span>
                                     </div>
-                                    <div className="flex justify-between items-center py-2 border-b border-border/50">
-                                        <span className="text-sm text-muted-foreground">Reference</span>
-                                        <span className="font-medium">{viewingPayment.paymentReference || '—'}</span>
+                                    <div className="flex justify-between items-center py-1 border-b border-slate-100 pb-3">
+                                        <span className="text-xs sm:text-sm text-slate-500 font-medium">Reference</span>
+                                        <span className="text-xs sm:text-sm font-bold text-slate-900 truncate max-w-[120px] sm:max-w-none">{viewingPayment.paymentReference || '—'}</span>
                                     </div>
-                                    <div className="flex justify-between items-center py-2">
-                                        <span className="text-sm text-muted-foreground">Submitted</span>
-                                        <span className="font-medium">{formatDate(viewingPayment.createdAt)}</span>
+                                    <div className="flex justify-between items-center py-1">
+                                        <span className="text-xs sm:text-sm text-slate-500 font-medium">Submitted</span>
+                                        <span className="text-xs sm:text-sm font-bold text-slate-900">{formatDate(viewingPayment.createdAt)}</span>
                                     </div>
                                 </div>
                             </div>
@@ -517,9 +515,9 @@ export default function PaymentVerificationPage() {
 
                     {/* Footer Actions */}
                     {viewingPayment?.status === 'pending' && (
-                        <div className="px-6 py-4 border-t bg-muted/30 flex gap-3">
+                        <div className="px-4 sm:px-6 py-4 border-t bg-slate-50/50 flex flex-col sm:flex-row gap-3">
                             <Button
-                                className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                                className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold h-11"
                                 onClick={() => {
                                     setSelectedPayment(viewingPayment);
                                     setActionType('approve');
@@ -531,7 +529,7 @@ export default function PaymentVerificationPage() {
                             </Button>
                             <Button
                                 variant="outline"
-                                className="flex-1 border-red-200 text-red-600 hover:bg-red-50"
+                                className="flex-1 border-slate-200 text-slate-600 hover:bg-slate-50 rounded-xl font-bold h-11"
                                 onClick={() => {
                                     setSelectedPayment(viewingPayment);
                                     setActionType('reject');

@@ -59,16 +59,16 @@ export default function Navbar() {
             </div>
 
             {/* Right Side Actions */}
-            <div className="hidden lg:flex items-center space-x-4">
-              <Link href="/auth/login" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
-                Log In
+            <div className="hidden lg:flex items-center space-x-3">
+              <Link href="/auth/login">
+                <button className="px-6 py-2.5 rounded-full border border-slate-200 text-slate-900 font-bold text-sm hover:bg-slate-50 transition-all">
+                  Log In
+                </button>
               </Link>
 
               <Link href="/auth/register">
-                <button className="group relative px-5 py-2.5 rounded-full overflow-hidden bg-slate-900 text-white font-semibold text-sm transition-transform hover:scale-105">
-                  <span className="relative z-10 flex items-center">
-                    Get Started
-                  </span>
+                <button className="px-6 py-2.5 rounded-full bg-slate-900 text-white font-bold text-sm hover:bg-slate-800 transition-all shadow-sm">
+                  Get Started
                 </button>
               </Link>
             </div>

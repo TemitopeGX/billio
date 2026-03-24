@@ -168,9 +168,9 @@ export default function ReportsPage() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
         {/* Total Revenue */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-slate-50 rounded-xl">
               <DollarSign className="h-6 w-6 text-slate-900" />
@@ -180,15 +180,15 @@ export default function ReportsPage() {
               <span>+12%</span>
             </div>
           </div>
-          <div>
-            <p className="text-sm font-medium text-slate-500 mb-1">Total Revenue</p>
-            <p className="text-3xl font-bold text-slate-900">{formatCurrency(totalRevenue)}</p>
-            <p className="text-xs text-slate-400 mt-1">All invoices</p>
+          <div className="mt-auto space-y-0.5 sm:space-y-1">
+            <p className="text-[10px] sm:text-sm font-medium text-slate-500 line-clamp-1">Total Revenue</p>
+            <p className="text-lg xs:text-xl sm:text-3xl font-bold text-slate-900 truncate">{formatCurrency(totalRevenue)}</p>
+            <p className="text-[9px] sm:text-xs text-slate-400 line-clamp-1">All invoices</p>
           </div>
         </div>
 
         {/* Paid Revenue */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-slate-50 rounded-xl">
               <CreditCard className="h-6 w-6 text-slate-900" />
@@ -198,15 +198,15 @@ export default function ReportsPage() {
               <span>+8%</span>
             </div>
           </div>
-          <div>
-            <p className="text-sm font-medium text-slate-500 mb-1">Paid Revenue</p>
-            <p className="text-3xl font-bold text-slate-900">{formatCurrency(paidRevenue)}</p>
-            <p className="text-xs text-slate-400 mt-1">Received payments</p>
+          <div className="mt-auto space-y-0.5 sm:space-y-1">
+            <p className="text-[10px] sm:text-sm font-medium text-slate-500 line-clamp-1">Paid Revenue</p>
+            <p className="text-lg xs:text-xl sm:text-3xl font-bold text-slate-900 truncate">{formatCurrency(paidRevenue)}</p>
+            <p className="text-[9px] sm:text-xs text-slate-400 line-clamp-1">Received payments</p>
           </div>
         </div>
 
         {/* Profit */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-slate-50 rounded-xl">
               <TrendingUp className="h-6 w-6 text-slate-900" />
@@ -216,15 +216,15 @@ export default function ReportsPage() {
               <span>+15%</span>
             </div>
           </div>
-          <div>
-            <p className="text-sm font-medium text-slate-500 mb-1">Profit</p>
-            <p className="text-3xl font-bold text-slate-900">{formatCurrency(profit)}</p>
-            <p className="text-xs text-slate-400 mt-1">After expenses</p>
+          <div className="mt-auto space-y-0.5 sm:space-y-1">
+            <p className="text-[10px] sm:text-sm font-medium text-slate-500 line-clamp-1">Profit</p>
+            <p className="text-lg xs:text-xl sm:text-3xl font-bold text-slate-900 truncate">{formatCurrency(profit)}</p>
+            <p className="text-[9px] sm:text-xs text-slate-400 line-clamp-1">After expenses</p>
           </div>
         </div>
 
         {/* Paid Rate */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-slate-50 rounded-xl">
               <BarChart3 className="h-6 w-6 text-slate-900" />
@@ -234,10 +234,10 @@ export default function ReportsPage() {
               <span>+5%</span>
             </div>
           </div>
-          <div>
-            <p className="text-sm font-medium text-slate-500 mb-1">Paid Rate</p>
-            <p className="text-3xl font-bold text-slate-900">{paidRate}%</p>
-            <p className="text-xs text-slate-400 mt-1">Payment success rate</p>
+          <div className="mt-auto space-y-0.5 sm:space-y-1">
+            <p className="text-[10px] sm:text-sm font-medium text-slate-500 line-clamp-1">Paid Rate</p>
+            <p className="text-lg xs:text-xl sm:text-3xl font-bold text-slate-900 truncate">{paidRate}%</p>
+            <p className="text-[9px] sm:text-xs text-slate-400 line-clamp-1">Payment success rate</p>
           </div>
         </div>
       </div>
@@ -260,19 +260,21 @@ export default function ReportsPage() {
           <div className="p-6">
             {revenueData.length > 0 ? (
               <ChartContainer config={chartConfig} className="h-[300px]">
-                <AreaChart data={revenueData}>
+                <AreaChart data={revenueData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
                   <XAxis
                     dataKey="date"
                     axisLine={false}
                     tickLine={false}
-                    tick={{ fill: '#64748b', fontSize: 12, fontWeight: 600 }}
+                    tick={{ fill: '#64748b', fontSize: 10, fontWeight: 600 }}
                     dy={10}
                   />
                   <YAxis
                     axisLine={false}
                     tickLine={false}
-                    tick={{ fill: '#64748b', fontSize: 12, fontWeight: 600 }}
+                    tick={{ fill: '#64748b', fontSize: 10, fontWeight: 600 }}
+                    width={42}
+                    tickFormatter={(value) => value >= 1000 ? `${(value / 1000).toFixed(value % 1000 === 0 ? 0 : 1)}k` : value}
                   />
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Area

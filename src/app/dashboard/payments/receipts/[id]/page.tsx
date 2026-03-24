@@ -113,31 +113,31 @@ export default function ReceiptPage() {
     return (
         <div className="max-w-5xl mx-auto space-y-8 p-6 print:p-0">
             {/* Header Actions - Hidden when printing */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 print:hidden">
-                <div className="flex items-center space-x-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 print:hidden">
+                <div className="flex items-center space-x-3 sm:space-x-4">
                     <Link href="/dashboard/payments/history">
-                        <Button variant="ghost" size="icon" className="h-10 w-10 text-slate-500 hover:text-slate-900">
+                        <Button variant="ghost" size="icon" className="h-9 w-9 sm:h-10 sm:w-10 text-slate-500 hover:text-slate-900 bg-slate-100/50 rounded-xl">
                             <ArrowLeft className="h-5 w-5" />
                         </Button>
                     </Link>
                     <div>
-                        <h1 className="text-2xl font-black text-slate-900 tracking-tight">Payment Receipt</h1>
-                        <p className="text-slate-500 text-sm">Reference: {payment.paymentReference || 'N/A'}</p>
+                        <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Payment Receipt</h1>
+                        <p className="text-slate-500 text-xs sm:text-sm truncate max-w-[150px] sm:max-w-none">Ref: {payment.paymentReference || 'N/A'}</p>
                     </div>
                 </div>
 
-                <div className="flex items-center space-x-3">
-                    <Button variant="outline" onClick={handlePrint} className="h-10 text-sm border-slate-200">
-                        <Printer className="mr-2 h-4 w-4" />
+                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar sm:overflow-visible pb-1 sm:pb-0">
+                    <Button variant="outline" onClick={handlePrint} className="h-9 sm:h-10 text-xs sm:text-sm border-slate-200 rounded-xl px-3 sm:px-4 shrink-0 font-bold text-slate-700 hover:bg-slate-50">
+                        <Printer className="mr-1.5 sm:mr-2 h-4 w-4" />
                         Print
                     </Button>
-                    <Button variant="outline" onClick={handleSendEmail} disabled={sending} className="h-10 text-sm border-slate-200">
-                        {sending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Mail className="mr-2 h-4 w-4" />}
-                        Send Email
+                    <Button variant="outline" onClick={handleSendEmail} disabled={sending} className="h-9 sm:h-10 text-xs sm:text-sm border-slate-200 rounded-xl px-3 sm:px-4 shrink-0 font-bold text-slate-700 hover:bg-slate-50">
+                        {sending ? <Loader2 className="mr-1.5 sm:mr-2 h-4 w-4 animate-spin" /> : <Mail className="mr-1.5 sm:mr-2 h-4 w-4" />}
+                        Email
                     </Button>
-                    <Button onClick={handleDownload} disabled={downloading} className="h-10 text-sm bg-slate-900 hover:bg-slate-800 text-white">
-                        {downloading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Download className="mr-2 h-4 w-4" />}
-                        Download PDF
+                    <Button onClick={handleDownload} disabled={downloading} className="h-9 sm:h-10 text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-3 sm:px-4 shrink-0 font-bold shadow-none">
+                        {downloading ? <Loader2 className="mr-1.5 sm:mr-2 h-4 w-4 animate-spin" /> : <Download className="mr-1.5 sm:mr-2 h-4 w-4" />}
+                        Download
                     </Button>
                 </div>
             </div>
@@ -145,69 +145,68 @@ export default function ReceiptPage() {
             {/* Receipt Preview */}
             <Card className="bg-white border text-center md:text-left border-slate-200 shadow-sm print:shadow-none print:border-0 overflow-hidden">
                 {/* Receipt Header */}
-                <div className="bg-slate-900 text-white p-8 md:p-12 print:bg-slate-900 print:text-white print-color-adjust-exact">
-                    <div className="flex flex-col md:flex-row justify-between md:items-start gap-8">
+                <div className="bg-slate-900 text-white p-6 sm:p-8 md:p-12 print:bg-slate-900 print:text-white print-color-adjust-exact">
+                    <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-4 sm:gap-8 text-center sm:text-left">
                         <div>
-                            <h2 className="text-3xl font-black tracking-tighter mb-2">Billio.</h2>
-                            <p className="text-slate-400 text-sm">Payment Confirmation</p>
+                            <h2 className="text-2xl sm:text-3xl font-black tracking-tighter mb-2">Billio.</h2>
+                            <p className="text-slate-400 text-xs sm:text-sm">Payment Confirmation</p>
                         </div>
-                        <div className="text-right">
-                            <div className="text-4xl md:text-5xl font-black tracking-tight mb-2">RECEIPT</div>
-                            <div className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold uppercase tracking-wider">
-                                <CheckCircle className="w-3 h-3 mr-1" /> Paid Success
+                        <div className="sm:text-right">
+                            <div className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-2 sm:mb-3">RECEIPT</div>
+                            <div className="inline-flex items-center px-2.5 sm:px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] sm:text-xs font-bold uppercase tracking-wider">
+                                <CheckCircle className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1" /> Paid Success
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <CardContent className="p-8 md:p-12 space-y-12">
+                <CardContent className="p-6 sm:p-8 md:p-12 space-y-8 sm:space-y-12 text-center sm:text-left">
                     {/* Amount Section */}
-                    <div className="text-center py-8 bg-slate-50 rounded-2xl border border-slate-100">
-                        <p className="text-slate-500 text-sm font-medium uppercase tracking-wider mb-2">Amount Paid</p>
-                        <div className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">
+                    <div className="text-center py-6 sm:py-8 bg-slate-50 rounded-2xl border border-slate-100">
+                        <p className="text-slate-500 text-xs sm:text-sm font-black uppercase tracking-widest mb-2">Amount Paid</p>
+                        <div className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight">
                             ₦{Number(payment.paymentAmount || payment.amount).toLocaleString()}
                         </div>
                     </div>
 
                     {/* Info Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
                         <div className="space-y-6">
                             <div>
-                                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Payment From</h3>
+                                <h3 className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 pr-4">Payment From</h3>
                                 <div className="space-y-1">
-                                    <p className="text-lg font-bold text-slate-900">{invoice.client.name}</p>
-                                    <p className="text-slate-500">{invoice.client.email}</p>
-                                    <p className="text-slate-500">{invoice.client.address}</p>
+                                    <p className="text-base sm:text-lg font-black text-slate-900">{invoice.client.name}</p>
+                                    <p className="text-sm sm:text-base text-slate-500 truncate">{invoice.client.email}</p>
+                                    <p className="text-sm sm:text-base text-slate-500">{invoice.client.address}</p>
                                 </div>
                             </div>
                             <div>
-                                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Payment To</h3>
+                                <h3 className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 pr-4">Payment To</h3>
                                 <div className="space-y-1">
-                                    <p className="text-lg font-bold text-slate-900">{payment.companyName}</p>
-                                    {/* User email/address not always available in payment object directly without explicit fetch, but user name is */}
+                                    <p className="text-base sm:text-lg font-black text-slate-900">{payment.companyName}</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="space-y-6 md:text-right">
+                        <div className="space-y-6 sm:text-right">
                             <div>
-                                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Payment Details</h3>
-                                <div className="space-y-2 inline-block text-left">
-                                    <div className="flex justify-between gap-8">
-                                        <span className="text-slate-500">Date Paid:</span>
-                                        <span className="font-medium text-slate-900">{new Date(payment.createdAt).toLocaleDateString()}</span>
+                                <h3 className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Payment Details</h3>
+                                <div className="space-y-2.5 inline-block text-left w-full sm:w-auto">
+                                    <div className="flex justify-between gap-8 py-1 border-b border-slate-50 sm:border-none">
+                                        <span className="text-xs sm:text-sm text-slate-500 font-medium">Date Paid:</span>
+                                        <span className="text-xs sm:text-sm font-bold text-slate-900">{new Date(payment.createdAt).toLocaleDateString()}</span>
                                     </div>
-                                    <div className="flex justify-between gap-8">
-                                        <span className="text-slate-500">Payment Method:</span>
-                                        <span className="font-medium text-slate-900 capitalize">{payment.paymentMethod?.replace('_', ' ')}</span>
+                                    <div className="flex justify-between gap-8 py-1 border-b border-slate-50 sm:border-none">
+                                        <span className="text-xs sm:text-sm text-slate-500 font-medium">Method:</span>
+                                        <span className="text-xs sm:text-sm font-bold text-slate-900 capitalize">{payment.paymentMethod?.replace('_', ' ')}</span>
                                     </div>
-                                    <div className="flex justify-between gap-8">
-                                        <span className="text-slate-500">Transaction Ref:</span>
-                                        <span className="font-medium text-slate-900 font-mono text-sm">{payment.paymentReference || 'N/A'}</span>
+                                    <div className="flex justify-between gap-8 py-1 border-b border-slate-50 sm:border-none">
+                                        <span className="text-xs sm:text-sm text-slate-500 font-medium">Ref:</span>
+                                        <span className="text-xs sm:text-sm font-bold text-slate-900 font-mono truncate max-w-[120px] sm:max-w-none">{payment.paymentReference || 'N/A'}</span>
                                     </div>
-                                    <div className="flex justify-between gap-8">
-                                        <span className="text-slate-500">Invoice No:</span>
-                                        <span className="font-medium text-slate-900">#{invoice.number}</span>
+                                    <div className="flex justify-between gap-8 py-1 sm:border-none">
+                                        <span className="text-xs sm:text-sm text-slate-500 font-medium">Invoice No:</span>
+                                        <span className="text-xs sm:text-sm font-bold text-slate-900">#{invoice.number}</span>
                                     </div>
                                 </div>
                             </div>

@@ -42,7 +42,7 @@ export default function About() {
             <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-slate-200/60 border border-slate-100">
               <div className="aspect-square bg-slate-50">
                 <Image
-                  src="/about-dashboard.png"
+                  src="/about-dashboard.webp"
                   alt="Billio Dashboard Interface"
                   width={800}
                   height={800}

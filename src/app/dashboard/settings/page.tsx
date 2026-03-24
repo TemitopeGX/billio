@@ -699,7 +699,7 @@ export default function SettingsPage() {
 
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Sidebar Navigation */}
-        <div className="lg:w-64 flex lg:flex-col overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 gap-2 no-scrollbar scroll-smooth snap-x">
+        <div className="lg:w-64 flex lg:flex-col overflow-x-auto lg:overflow-visible gap-2 no-scrollbar scroll-smooth snap-x">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
@@ -709,7 +709,7 @@ export default function SettingsPage() {
                   setActiveTab(tab.id as any);
                   router.push(`/dashboard/settings?tab=${tab.id}`);
                 }}
-                className={`flex items-center space-x-2 sm:space-x-3 px-4 py-2.5 sm:py-3 rounded-xl text-left transition-all duration-200 font-bold whitespace-nowrap snap-start ${activeTab === tab.id
+                className={`flex items-center space-x-2 sm:space-x-3 px-4 py-2.5 sm:py-3 rounded-xl text-left transition-all duration-200 font-bold whitespace-nowrap snap-start shrink-0 ${activeTab === tab.id
                   ? 'bg-slate-900 text-white shadow-lg shadow-slate-200'
                   : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
                   }`}
@@ -722,7 +722,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           {/* Profile Settings */}
           {activeTab === 'profile' && (
             <Card className="border-slate-200 shadow-sm">
@@ -1370,23 +1370,27 @@ export default function SettingsPage() {
                 <div className="space-y-8">
 
                   {/* Current Plan Overview */}
-                  {/* Current Plan Overview with Usage */}
-                  <div className="bg-slate-900 rounded-2xl p-6 text-white relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-slate-800 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-50"></div>
-                    <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8">
-                      <div>
-                        <div className="inline-flex items-center space-x-2 bg-slate-800 px-3 py-1 rounded-full mb-4">
-                          <span className={`w-2 h-2 rounded-full ${subscription?.status === 'active' ? 'bg-emerald-400' : subscription?.status === 'canceled' ? 'bg-red-400' : 'bg-amber-400'}`}></span>
-                          <span className="text-xs font-bold text-slate-300 uppercase tracking-wide">Current Plan</span>
+                  {/* Current Subscription Card */}
+                  <div className="relative overflow-hidden bg-slate-900 rounded-2xl p-5 sm:p-10 text-white border border-slate-800 shadow-xl mb-8">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+                    <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full -ml-32 -mb-32 blur-3xl"></div>
+
+                    <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                      <div className="flex flex-col justify-between">
+                        <div>
+                          <div className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] uppercase font-bold tracking-widest mb-6">
+                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 mr-2 animate-pulse"></span>
+                            Current Plan
+                          </div>
+                          <h2 className="text-4xl sm:text-5xl font-black mb-4 tracking-tighter">
+                            {subscription?.plan_name || 'Free'}
+                          </h2>
+                          <p className="text-slate-400 max-w-sm mb-8 leading-relaxed text-sm sm:text-base">
+                            {subscription?.status === 'active' && subscription?.plan?.slug?.includes('pro')
+                              ? 'Enjoying full access to all premium features.'
+                              : 'Perfect for freelancers and individual contractors just getting started.'}
+                          </p>
                         </div>
-                        <h3 className="text-3xl font-black mb-2">
-                          {subscription?.status === 'active' ? (subscription?.plan?.name || "Free Starter") : "Free Starter"}
-                        </h3>
-                        <p className="text-slate-400 max-w-md mb-6">
-                          {subscription?.status === 'active' && subscription?.plan?.slug?.includes('pro')
-                            ? 'Enjoying full access to all premium features.'
-                            : 'Perfect for freelancers and individual contractors just getting started.'}
-                        </p>
 
                         <div className="flex flex-col gap-2">
                           {subscription?.status === 'active' ? (
@@ -1401,20 +1405,22 @@ export default function SettingsPage() {
                                   Cancel Subscription
                                 </Button>
                               ) : (
-                                <Button
-                                  onClick={handleManageSubscription}
-                                  disabled={isSaving}
-                                  size="sm"
-                                  className="bg-white text-slate-900 hover:bg-slate-100 font-semibold px-4"
-                                >
-                                  {!subscription?.auto_renew ? 'Reactivate Subscription' : 'Manage Subscription'}
-                                </Button>
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                                  <Button
+                                    onClick={handleManageSubscription}
+                                    disabled={isSaving}
+                                    size="sm"
+                                    className="bg-white text-slate-900 hover:bg-slate-100 font-bold px-6 h-11 rounded-xl w-full sm:w-auto"
+                                  >
+                                    {!subscription?.auto_renew ? 'Reactivate Subscription' : 'Manage Subscription'}
+                                  </Button>
+                                  <p className="text-[10px] text-slate-400 font-medium pl-1">
+                                    {subscription?.auto_renew
+                                      ? `Auto-renews`
+                                      : 'Will not auto-renew'}
+                                  </p>
+                                </div>
                               )}
-                              <p className="text-[10px] text-slate-400 mt-2 pl-1">
-                                {subscription?.auto_renew
-                                  ? `Auto-renews`
-                                  : 'Will not auto-renew'}
-                              </p>
                             </div>
                           ) : (
                             <Button
@@ -1430,29 +1436,28 @@ export default function SettingsPage() {
                         </div>
 
                         {subscription?.current_period_end && subscription?.status !== 'canceled' && (
-                          <p className="text-xs text-slate-500 mt-3">
-                            {!subscription?.auto_renew
-                              ? `Cancels on ${new Date(subscription.current_period_end).toLocaleDateString()}`
-                              : `Renews on ${new Date(subscription.current_period_end).toLocaleDateString()}`
+                          <p className="text-xs text-slate-500 mt-4 font-medium">
+                            {subscription?.auto_renew
+                              ? `Renews on ${new Date(subscription.current_period_end).toLocaleDateString()}`
+                              : `Expires on ${new Date(subscription.current_period_end).toLocaleDateString()}`
                             }
                           </p>
                         )}
                       </div>
-
-                      <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-700">
-                        <h4 className="font-bold text-sm text-slate-200 mb-4 uppercase tracking-wider">Plan Usage</h4>
+                      <div className="bg-slate-800/40 rounded-2xl p-6 border border-slate-700/50 backdrop-blur-sm">
+                        <h4 className="font-bold text-xs text-slate-300 mb-5 uppercase tracking-[0.2em]">Plan Usage</h4>
 
                         {/* Invoices Usage */}
-                        <div className="mb-4">
-                          <div className="flex justify-between text-sm mb-2">
-                            <span className="text-slate-400">Monthly Invoices</span>
-                            <span className="text-white font-medium">
+                        <div className="mb-6">
+                          <div className="flex justify-between text-xs sm:text-sm mb-2.5">
+                            <span className="text-slate-400 font-medium tracking-tight">Monthly Invoices</span>
+                            <span className="text-white font-bold">
                               {usageStats?.features.invoices.used || 0} / {usageStats?.features.invoices.limit || '∞'}
                             </span>
                           </div>
-                          <div className="w-full bg-slate-700 rounded-full h-2">
+                          <div className="w-full bg-slate-700/50 rounded-full h-2">
                             <div
-                              className={`bg-emerald-500 h-2 rounded-full transition-all duration-500`}
+                              className={`bg-emerald-500 h-2 rounded-full transition-all duration-700 shadow-[0_0_10px_rgba(16,185,129,0.3)]`}
                               style={{ width: `${typeof usageStats?.features.invoices.limit === 'number' ? Math.min(100, ((usageStats?.features.invoices.used || 0) / usageStats.features.invoices.limit) * 100) : 100}%` }}
                             ></div>
                           </div>
@@ -1460,20 +1465,19 @@ export default function SettingsPage() {
 
                         {/* Clients Usage */}
                         <div>
-                          <div className="flex justify-between text-sm mb-2">
-                            <span className="text-slate-400">Clients</span>
-                            <span className="text-white font-medium">
+                          <div className="flex justify-between text-xs sm:text-sm mb-2.5">
+                            <span className="text-slate-400 font-medium tracking-tight">Clients</span>
+                            <span className="text-white font-bold">
                               {usageStats?.features.clients.used || 0} / {usageStats?.features.clients.limit || '∞'}
                             </span>
                           </div>
-                          <div className="w-full bg-slate-700 rounded-full h-2">
+                          <div className="w-full bg-slate-700/50 rounded-full h-2">
                             <div
-                              className={`bg-blue-500 h-2 rounded-full transition-all duration-500`}
+                              className={`bg-blue-500 h-2 rounded-full transition-all duration-700 shadow-[0_0_10px_rgba(59,130,246,0.3)]`}
                               style={{ width: `${typeof usageStats?.features.clients.limit === 'number' ? Math.min(100, ((usageStats?.features.clients.used || 0) / usageStats.features.clients.limit) * 100) : 100}%` }}
                             ></div>
                           </div>
                         </div>
-
                       </div>
                     </div>
                   </div>
