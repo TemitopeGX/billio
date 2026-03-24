@@ -1383,7 +1383,7 @@ export default function SettingsPage() {
                             Current Plan
                           </div>
                           <h2 className="text-4xl sm:text-5xl font-black mb-4 tracking-tighter">
-                            {subscription?.plan_name || 'Free'}
+                            {subscription?.plan?.name || 'Free'}
                           </h2>
                           <p className="text-slate-400 max-w-sm mb-8 leading-relaxed text-sm sm:text-base">
                             {subscription?.status === 'active' && subscription?.plan?.slug?.includes('pro')
