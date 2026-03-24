@@ -116,44 +116,7 @@ export default function FAQ() {
           ))}
         </div>
 
-        {/* Contact Support */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
-          className="mt-20"
-        >
-          <div className="bg-slate-900 rounded-[2.5rem] p-12 text-center text-white relative overflow-hidden">
-            {/* Decorative */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-slate-800 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-50"></div>
 
-            <div className="max-w-3xl mx-auto relative z-10">
-              <h3 className="text-3xl font-bold mb-4">
-                Still have questions?
-              </h3>
-              <p className="text-xl text-slate-400 mb-10">
-                Our support team is here to help you 24/7. Get answers to your questions quickly.
-              </p>
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <a
-                  href="/support"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-4 text-base font-bold text-slate-900 hover:bg-slate-100 transition-all"
-                >
-                  <HelpCircle className="h-5 w-5" />
-                  Visit Help Center
-                </a>
-                <a
-                  href="/contact"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-700 px-8 py-4 text-base font-bold text-white hover:bg-slate-800 transition-all"
-                >
-                  <MessageCircle className="h-5 w-5" />
-                  Live Chat
-                </a>
-              </div>
-            </div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
