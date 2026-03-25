@@ -113,59 +113,66 @@ export default function Pricing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className={`relative rounded-[2rem] p-8 flex flex-col ${highlight
-                  ? 'bg-slate-900 text-white ring-4 ring-slate-900/5 transform md:-translate-y-4 shadow-xl'
-                  : 'bg-white text-slate-900 border border-slate-200'
+                className={`relative rounded-[2rem] flex flex-col bg-white border ${highlight ? 'border-transparent shadow-[0_0_40px_-15px_rgba(0,0,0,0.1)]' : 'border-slate-200 shadow-sm'
                   }`}
               >
-                {isPopular && (
-                  <div className="absolute top-0 right-0 left-0 mx-auto w-max -mt-3 bg-slate-900 text-white text-xs font-bold px-3 py-1 rounded-full border border-slate-800">
-                    MOST POPULAR
+                {/* Soft gradient background for highlighted card */}
+                {highlight && (
+                  <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden rounded-[2rem]">
+                    <div className="absolute -top-12 -left-4 w-48 h-48 bg-blue-400/20 blur-[40px] rounded-full" />
+                    <div className="absolute top-8 right-0 w-48 h-48 bg-orange-400/20 blur-[40px] rounded-full" />
+                    <div className="absolute top-20 left-10 w-40 h-40 bg-yellow-400/30 blur-[40px] rounded-full" />
                   </div>
                 )}
 
-                <div className="mb-8">
-                  <h3 className={`text-xl font-bold mb-2 ${highlight ? 'text-white' : 'text-slate-900'}`}>
+                <div className="p-8 pb-6 flex flex-col relative z-10 w-full">
+                  <h3 className={`text-xl font-bold mb-4 ${!highlight ? 'bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-500 to-orange-400' : 'text-slate-900'
+                    }`}>
                     {plan.name}
                   </h3>
-                  <p className={`text-sm ${highlight ? 'text-slate-400' : 'text-slate-500'}`}>
-                    {plan.description || "The perfect plan for you."}
-                  </p>
-                </div>
 
-                <div className="mb-8 flex items-baseline">
-                  <span className="text-4xl lg:text-5xl font-bold tracking-tight">
-                    {Number(plan.price) === 0 ? 'Free' : `₦${Number(plan.price).toLocaleString()}`}
-                  </span>
-                  {Number(plan.price) !== 0 && (
-                    <span className={`ml-2 text-sm font-semibold ${highlight ? 'text-slate-400' : 'text-slate-500'}`}>
-                      /{isAnnual ? 'yr' : 'mo'}
+                  <div className="flex items-center mb-6">
+                    <span className="text-[3rem] font-extrabold text-slate-900 tracking-tight leading-none">
+                      {Number(plan.price) === 0 ? 'Free' : `₦${Number(plan.price).toLocaleString()}`}
                     </span>
-                  )}
-                </div>
-
-                <div className="space-y-4 mb-8 flex-1">
-                  {plan.features.slice(0, 6).map((feature, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <div className={`mt-0.5 rounded-full p-0.5 ${highlight ? 'bg-slate-800' : 'bg-slate-100'}`}>
-                        <Check className={`w-3.5 h-3.5 ${highlight ? 'text-white' : 'text-slate-900'}`} />
+                    {Number(plan.price) !== 0 && (
+                      <div className="ml-3 flex flex-col text-[13px] font-medium text-slate-500 leading-tight">
+                        <span>per user / month</span>
+                        <span>billed {isAnnual ? 'annually' : 'monthly'}</span>
                       </div>
-                      <span className={`text-sm ${highlight ? 'text-slate-300' : 'text-slate-600'}`}>
-                        {feature}
-                      </span>
-                    </div>
-                  ))}
+                    )}
+                  </div>
+
+                  <button
+                    onClick={() => handlePlanSelect(plan.slug)}
+                    className={`w-full py-3.5 rounded-xl font-semibold transition-all text-sm ${highlight
+                        ? 'bg-[#1c1c1c] text-white hover:bg-black shadow-md'
+                        : 'bg-slate-100/80 text-slate-900 border border-slate-200/60 shadow-sm hover:bg-slate-200'
+                      }`}
+                  >
+                    Get started
+                  </button>
                 </div>
 
-                <button
-                  onClick={() => handlePlanSelect(plan.slug)}
-                  className={`w-full py-4 rounded-xl font-bold transition-all text-sm ${highlight
-                    ? 'bg-white text-slate-900 hover:bg-slate-100'
-                    : 'bg-slate-900 text-white hover:bg-slate-800'
-                    }`}
-                >
-                  {Number(plan.price) === 0 ? "Get Started" : `Choose ${plan.name}`}
-                </button>
+                <div className="px-8 pb-8 flex-1 flex flex-col relative z-10">
+                  <div className="absolute top-0 left-0 right-0 h-px bg-slate-100" />
+                  <div className="space-y-4 flex-1 pt-6">
+                    {plan.features.slice(0, 6).map((feature, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <Check className="w-5 h-5 text-slate-900 shrink-0 mt-0.5" strokeWidth={2.5} />
+                        <span className="text-sm font-medium text-slate-700">
+                          {feature}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-8 pt-4">
+                    <button className="text-[13px] font-medium text-slate-400 hover:text-slate-600 transition-colors">
+                      Need higher limits?
+                    </button>
+                  </div>
+                </div>
               </motion.div>
             );
           })}

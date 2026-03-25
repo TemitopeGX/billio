@@ -282,41 +282,42 @@ export default function Hero() {
                                             <p className="text-xs text-slate-500 font-medium mt-1">Last 7 days performance</p>
                                         </div>
                                         {/* Mock Chart Area */}
-                                        <div className="w-full relative pt-4 pb-2">
-                                            <div className="h-48 flex items-end relative border-b border-slate-100 pb-5">
+                                        <div className="w-full relative pt-6 pb-2">
+                                            <div className="h-[200px] flex items-end relative border-b border-slate-100 pb-5">
                                                 {/* Y-axis markers */}
-                                                <div className="absolute left-0 top-0 bottom-6 flex flex-col justify-between text-[10px] text-slate-400 h-full py-2">
-                                                    <span>4</span><span>3</span><span>2</span><span>1</span><span>0</span>
+                                                <div className="absolute left-0 top-0 bottom-6 flex flex-col justify-between text-[10px] font-bold text-slate-400 h-full py-2">
+                                                    <span>50k</span><span>40k</span><span>30k</span><span>20k</span><span>10k</span>
                                                 </div>
 
                                                 {/* Chart Area */}
-                                                <div className="ml-6 w-full h-full relative border-l border-slate-100">
+                                                <div className="ml-8 w-full h-full relative border-l border-slate-100">
+                                                    {/* Background Grid Lines */}
+                                                    <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
+                                                        <div className="w-full border-t border-slate-100 opacity-60 h-0"></div>
+                                                        <div className="w-full border-t border-slate-100 opacity-60 h-0"></div>
+                                                        <div className="w-full border-t border-slate-100 opacity-60 h-0"></div>
+                                                        <div className="w-full border-t border-slate-100 opacity-60 h-0"></div>
+                                                    </div>
+
                                                     {/* X-axis labels */}
-                                                    <div className="absolute -bottom-7 left-0 right-0 flex justify-between text-[10px] text-slate-400 font-medium px-4">
+                                                    <div className="absolute -bottom-8 left-0 right-0 flex justify-between text-[10px] text-slate-400 font-bold px-4">
                                                         <span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span><span>Mon</span><span>Tue</span>
                                                     </div>
 
-                                                    {/* Mock Line/Points */}
-                                                    {/* SV Graph */}
-                                                    <svg className="absolute bottom-[-1px] left-0 right-0 w-full h-[150%] overflow-visible z-0" preserveAspectRatio="none" viewBox="0 0 100 100">
-                                                        <path d="M 5 100 L 5 85 C 15 85, 12 40, 20 50 C 28 60, 28 65, 35 60 C 42 55, 42 35, 50 40 C 58 45, 58 70, 65 65 C 72 60, 72 30, 80 25 C 88 20, 88 35, 95 30 L 95 100 Z" fill="url(#gradientFill)" />
-                                                        <path d="M 5 85 C 15 85, 12 40, 20 50 C 28 60, 28 65, 35 60 C 42 55, 42 35, 50 40 C 58 45, 58 70, 65 65 C 72 60, 72 30, 80 25 C 88 20, 88 35, 95 30" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-500" style={{ strokeLinecap: "round", strokeLinejoin: "round" }} vectorEffect="non-scaling-stroke" />
+                                                    {/* Cool Smooth SV Graph */}
+                                                    <svg className="absolute bottom-[-1px] left-0 right-0 w-full h-full overflow-visible z-0" preserveAspectRatio="none" viewBox="0 0 100 100">
+                                                        <path d="M 0 80 C 15 75, 20 40, 35 50 C 50 60, 60 20, 75 30 C 85 35, 95 5, 100 0 L 100 100 L 0 100 Z" fill="url(#gradientFillCool)" />
+                                                        <path d="M 0 80 C 15 75, 20 40, 35 50 C 50 60, 60 20, 75 30 C 85 35, 95 5, 100 0" fill="none" stroke="#2563eb" strokeWidth="2.5" style={{ strokeLinecap: "round", strokeLinejoin: "round", filter: "drop-shadow(0px 8px 6px rgba(37,99,235,0.25))" }} vectorEffect="non-scaling-stroke" />
                                                         <defs>
-                                                            <linearGradient id="gradientFill" x1="0" y1="0" x2="0" y2="1">
-                                                                <stop offset="0%" stopColor="rgb(16 185 129 / 0.15)" />
-                                                                <stop offset="100%" stopColor="rgb(16 185 129 / 0)" />
+                                                            <linearGradient id="gradientFillCool" x1="0" y1="0" x2="0" y2="1">
+                                                                <stop offset="0%" stopColor="rgb(37 99 235 / 0.15)" />
+                                                                <stop offset="100%" stopColor="rgb(37 99 235 / 0)" />
                                                             </linearGradient>
                                                         </defs>
                                                     </svg>
-                                                    {/* Points */}
-                                                    <div className="absolute bottom-0 left-0 right-0 border-t-2 border-slate-300"></div>
-                                                    <div className="absolute bottom-[13.5%] left-[5%] h-[10px] w-[10px] rounded-full bg-white ring-2 ring-emerald-500 z-10 translate-x-[-5px]"></div>
-                                                    <div className="absolute bottom-[48.5%] left-[20%] h-[10px] w-[10px] rounded-full bg-white ring-2 ring-emerald-500 z-10 translate-x-[-5px]"></div>
-                                                    <div className="absolute bottom-[38.5%] left-[35%] h-[10px] w-[10px] rounded-full bg-white ring-2 ring-emerald-500 z-10 translate-x-[-5px]"></div>
-                                                    <div className="absolute bottom-[58.5%] left-[50%] h-[10px] w-[10px] rounded-full bg-white ring-2 ring-emerald-500 z-10 translate-x-[-5px]"></div>
-                                                    <div className="absolute bottom-[33.5%] left-[65%] h-[10px] w-[10px] rounded-full bg-white ring-2 ring-emerald-500 z-10 translate-x-[-5px]"></div>
-                                                    <div className="absolute bottom-[73.5%] left-[80%] h-[10px] w-[10px] rounded-full bg-white ring-2 ring-emerald-500 z-10 translate-x-[-5px]"></div>
-                                                    <div className="absolute bottom-[68.5%] left-[95%] h-[10px] w-[10px] rounded-full bg-white ring-2 ring-emerald-500 z-10 translate-x-[-5px]"></div>
+
+                                                    {/* Glowing Point at the end */}
+                                                    <div className="absolute top-[0%] right-[0%] h-[12px] w-[12px] bg-white rounded-full border-[3px] border-blue-600 shadow-[0_0_12px_rgba(37,99,235,0.6)] z-10 translate-x-1/2 -translate-y-1/2"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -367,6 +368,45 @@ export default function Hero() {
                                                 <div>
                                                     <p className="text-xs font-bold text-slate-900 mb-0.5">Payment received for INV-202512-{item.id}</p>
                                                     <p className="text-[10px] text-slate-500 font-medium">{item.amount} • {item.date}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Detailed Recent Invoices Table Mockup */}
+                            <div className="mt-8 px-10 pb-10">
+                                <div className="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
+                                    <div className="px-6 py-5 border-b border-slate-100 flex justify-between items-center">
+                                        <h3 className="text-lg font-bold text-slate-900">Recent Invoices</h3>
+                                        <button className="text-[13px] font-bold text-blue-600 hover:text-blue-700">View All</button>
+                                    </div>
+                                    <div className="w-full">
+                                        <div className="grid grid-cols-5 text-[11px] font-bold text-slate-400 uppercase tracking-widest px-6 py-4 border-b border-slate-50 bg-slate-50/50">
+                                            <div className="col-span-1">Invoice</div>
+                                            <div className="col-span-1">Client</div>
+                                            <div className="col-span-1">Date</div>
+                                            <div className="col-span-1">Amount</div>
+                                            <div className="col-span-1 text-right">Status</div>
+                                        </div>
+                                        {[
+                                            { id: 'INV-2026-001', client: 'Techcorp Industries', date: 'Mar 25, 2026', amount: '₦450,000', status: 'Paid', statusColor: 'bg-emerald-100 text-emerald-700' },
+                                            { id: 'INV-2026-002', client: 'Nexus Create', date: 'Mar 22, 2026', amount: '₦125,000', status: 'Pending', statusColor: 'bg-orange-100 text-orange-700' },
+                                            { id: 'INV-2026-003', client: 'Global Logistics', date: 'Mar 18, 2026', amount: '₦890,000', status: 'Paid', statusColor: 'bg-emerald-100 text-emerald-700' }
+                                        ].map((inv, idx) => (
+                                            <div key={idx} className="grid grid-cols-5 text-sm font-medium text-slate-700 px-6 py-4 border-b border-slate-50 hover:bg-slate-50/50 transition-colors cursor-pointer items-center">
+                                                <div className="col-span-1 font-bold text-slate-900">{inv.id}</div>
+                                                <div className="col-span-1 flex items-center gap-2">
+                                                    <div className="h-6 w-6 rounded-full bg-gradient-to-tr from-slate-200 to-slate-100 flex-shrink-0 border border-slate-300 overflow-hidden shadow-inner"></div>
+                                                    {inv.client}
+                                                </div>
+                                                <div className="col-span-1 text-slate-500">{inv.date}</div>
+                                                <div className="col-span-1 font-bold text-slate-900">{inv.amount}</div>
+                                                <div className="col-span-1 text-right flex justify-end">
+                                                    <span className={`px-2.5 py-1 text-[11px] font-bold rounded-full ${inv.statusColor}`}>
+                                                        {inv.status}
+                                                    </span>
                                                 </div>
                                             </div>
                                         ))}

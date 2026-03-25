@@ -65,55 +65,57 @@ export default function FAQ() {
           </p>
         </motion.div>
 
-        {/* FAQ Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
-          {faqs.map((faq, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="group"
-            >
-              <div className="bg-white rounded-2xl border border-slate-200 p-0 overflow-hidden hover:border-slate-300 transition-colors duration-300">
-                <button
-                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                  className="flex w-full items-start justify-between text-left p-6 transition-colors duration-200 hover:bg-slate-50"
+        {/* FAQ Stack */}
+        <div className="max-w-4xl mx-auto space-y-4 relative z-10 w-full">
+          {faqs.map((faq, index) => {
+            const isOpen = openIndex === index;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <div
+                  className={`bg-white rounded-[2rem] border transition-all duration-300 overflow-hidden ${isOpen ? "border-slate-300 shadow-[0_8px_30px_rgb(0,0,0,0.04)]" : "border-slate-200 hover:border-slate-300 hover:shadow-sm"
+                    }`}
                 >
-                  <div className="flex items-start gap-4 flex-1">
-                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 flex-shrink-0 mt-1">
-                      <HelpCircle className="h-4 w-4 text-slate-500" />
-                    </div>
-                    <span className="text-lg font-bold text-slate-900">
+                  <button
+                    onClick={() => setOpenIndex(isOpen ? null : index)}
+                    className="flex w-full items-center justify-between text-left p-6 sm:p-8"
+                  >
+                    <span className={`text-lg sm:text-xl font-bold transition-colors pr-8 ${isOpen ? 'text-slate-900' : 'text-slate-700 group-hover:text-slate-900'}`}>
                       {faq.question}
                     </span>
-                  </div>
-                  <ChevronDown
-                    className={`h-5 w-5 flex-none text-slate-400 transition-transform ml-4 ${openIndex === index ? "rotate-180" : ""
-                      }`}
-                  />
-                </button>
-                <AnimatePresence>
-                  {openIndex === index && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden bg-slate-50/50"
-                    >
-                      <div className="p-6 pt-2 pl-16">
-                        <p className="text-base leading-relaxed text-slate-600">
-                          {faq.answer}
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </motion.div>
-          ))}
+                    <div className={`shrink-0 flex h-10 w-10 items-center justify-center rounded-full border transition-colors ${isOpen ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+                      }`}>
+                      <ChevronDown
+                        strokeWidth={2.5}
+                        className={`h-5 w-5 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                      />
+                    </div>
+                  </button>
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                      >
+                        <div className="px-6 sm:px-8 pb-8 pt-0">
+                          <p className="text-base sm:text-lg leading-relaxed text-slate-500">
+                            {faq.answer}
+                          </p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
 
