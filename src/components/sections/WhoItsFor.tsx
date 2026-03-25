@@ -59,11 +59,21 @@ export default function WhoItsFor() {
 
     const scrollToCategory = (id: string) => {
         setActiveTab(id);
-        const element = document.getElementById(`card-${id.replace(/\s+/g, "-")}`);
-        if (element && scrollContainerRef.current) {
+        const cardElement = document.getElementById(`card-${id.replace(/\s+/g, "-")}`);
+        const tabElement = document.getElementById(`tab-btn-${id.replace(/\s+/g, "-")}`);
+        const tabBar = document.getElementById(`category-tab-bar`);
+
+        // Scroll the main card carousel
+        if (cardElement && scrollContainerRef.current) {
             const container = scrollContainerRef.current;
-            const scrollPos = element.offsetLeft - container.offsetLeft - (container.offsetWidth - element.offsetWidth) / 2;
+            const scrollPos = cardElement.offsetLeft - container.offsetLeft - (container.offsetWidth - cardElement.offsetWidth) / 2;
             container.scrollTo({ left: scrollPos, behavior: "smooth" });
+        }
+
+        // Scroll the tab bar itself to keep the active tab visible
+        if (tabElement && tabBar) {
+            const tabScrollPos = tabElement.offsetLeft - tabBar.offsetLeft - (tabBar.offsetWidth - tabElement.offsetWidth) / 2;
+            tabBar.scrollTo({ left: tabScrollPos, behavior: "smooth" });
         }
     };
 
@@ -83,19 +93,29 @@ export default function WhoItsFor() {
                         </p>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-2 border border-slate-200 rounded-full p-1.5 shadow-sm bg-white overflow-x-auto max-w-full no-scrollbar">
-                        {categories.map((cat) => (
-                            <button
-                                key={cat.id}
-                                onClick={() => scrollToCategory(cat.id)}
-                                className={`flex-shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-colors whitespace-nowrap ${activeTab === cat.id
-                                    ? "bg-[#0e0f2b] text-white shadow"
-                                    : "bg-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                                    }`}
-                            >
-                                {cat.id}
-                            </button>
-                        ))}
+                    <div className="relative w-full lg:w-auto">
+                        {/* Gradient Fade Indicator for Mobile Scroll */}
+                        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none md:hidden"></div>
+
+                        <div
+                            id="category-tab-bar"
+                            className="flex flex-nowrap items-center gap-1 border border-slate-200 rounded-full p-1.5 shadow-sm bg-white overflow-x-auto max-w-full no-scrollbar pr-10 md:pr-1.5"
+                        >
+                            {categories.map((cat) => (
+                                <button
+                                    key={cat.id}
+                                    id={`tab-btn-${cat.id.replace(/\s+/g, "-")}`}
+                                    onClick={() => scrollToCategory(cat.id)}
+                                    className={`flex-shrink-0 px-4 py-2.5 rounded-full text-[13px] font-bold tracking-tight transition-all whitespace-nowrap ${activeTab === cat.id
+                                        ? "bg-[#0e0f2b] text-white shadow-md"
+                                        : "bg-transparent text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+                                        }`}
+                                    style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif' }}
+                                >
+                                    {cat.id}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
