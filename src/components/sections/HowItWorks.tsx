@@ -1,189 +1,234 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { CheckCircle2, Apple } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { Check, User, Send, DollarSign, Receipt, ChevronRight } from "lucide-react";
 
 export default function HowItWorks() {
-  return (
-    <section id="how-it-works" className="py-24 lg:py-32 bg-black relative overflow-hidden font-sans border-t border-white/10">
+  const [activeTab, setActiveTab] = useState(0);
 
-      {/* Subtle Dot Grid Background */}
-      <div
-        className="absolute inset-0 z-0 opacity-20"
-        style={{
-          backgroundImage: 'radial-gradient(#444 1px, transparent 1px)',
-          backgroundSize: '24px 24px'
-        }}
-      />
+  const tabs = ["Sign Up", "Complete Setup", "Create Invoice", "Send Invoice", "Issue Receipt"];
 
-      <div className="max-w-[1400px] w-full mx-auto px-6 lg:px-12 relative z-10">
-
-        {/* Header */}
-        <div className="flex flex-col items-center text-center mb-16 lg:mb-24">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col items-center"
-          >
-            <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-medium text-white/50 uppercase tracking-[0.2em] mb-6">
-              How it works
+  const steps = [
+    {
+      title: "Sign up in seconds.",
+      description: "Get started instantly. No credit card required, just enter your email and you're ready to modernize your billing.",
+      action: "Create an Account now",
+      visual: (
+        <div className="w-full h-full bg-white border border-slate-200 rounded-3xl shadow-[0_20px_40px_rgba(0,0,0,0.03)] p-8 sm:p-12 flex flex-col justify-center">
+          <div className="text-center mb-8">
+            <div className="text-2xl font-black tracking-tighter text-slate-900 mb-6">Billio.</div>
+            <h4 className="text-lg font-bold text-slate-900 mb-2">Create your account</h4>
+            <p className="text-xs text-slate-400">Get started with Billio today</p>
+          </div>
+          <div className="space-y-4 max-w-sm mx-auto w-full">
+            <div>
+              <div className="text-[10px] font-semibold text-slate-500 mb-1.5 ml-1">Full name</div>
+              <div className="h-10 w-full bg-[#f4f7fb] border border-[#e5e9f0] rounded-lg px-4 flex items-center">
+                <span className="text-xs font-medium text-slate-600">John Doe</span>
+              </div>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium text-white tracking-tight" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif' }}>
-              Just a few simple steps
-            </h2>
+            <div>
+              <div className="text-[10px] font-semibold text-slate-500 mb-1.5 ml-1">Email address</div>
+              <div className="h-10 w-full bg-[#f4f7fb] border border-[#e5e9f0] rounded-lg px-4 flex items-center">
+                <span className="text-xs font-medium text-slate-600">john@example.com</span>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3 pt-2">
+              <div className="h-10 bg-slate-200 rounded-lg animate-pulse opacity-50"></div>
+              <div className="h-10 bg-slate-200 rounded-lg animate-pulse opacity-50"></div>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Complete business profile.",
+      description: "Add your business details, logo, and payment preferences once. Every future invoice will automatically reflect your professional branding.",
+      action: "Set up your brand",
+      visual: (
+        <div className="w-full h-full bg-white border border-slate-200 rounded-3xl shadow-[0_20px_40px_rgba(0,0,0,0.03)] p-8 sm:p-12 flex flex-col justify-center">
+          <div className="flex items-center gap-6 mb-10 max-w-sm mx-auto w-full">
+            <div className="h-20 w-20 bg-slate-50 rounded-full border border-dashed border-slate-300 flex items-center justify-center">
+              <User className="h-8 w-8 text-slate-300" />
+            </div>
+            <div className="flex-1 space-y-3">
+              <div className="h-4 w-3/4 bg-slate-200 rounded-full"></div>
+              <div className="h-3 w-1/2 bg-slate-100 rounded-full"></div>
+            </div>
+          </div>
+          <div className="space-y-4 max-w-sm mx-auto w-full">
+            <div className="flex items-center justify-between p-4 border border-slate-100 rounded-xl bg-slate-50">
+              <div className="flex items-center gap-3">
+                <div className="h-8 w-8 bg-white border border-slate-200 rounded-md flex items-center justify-center shadow-sm">
+                  <DollarSign className="h-4 w-4 text-slate-600" />
+                </div>
+                <span className="text-sm font-medium text-slate-700">Bank Account</span>
+              </div>
+              <div className="h-5 w-5 rounded-full bg-emerald-500 flex items-center justify-center">
+                <Check className="h-3 w-3 text-white" />
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Create beautiful invoices.",
+      description: "Use our lightning-fast, keyboard-friendly editor to draft professional invoices. Add line items and apply taxes instantly.",
+      action: "Explore the editor",
+      visual: (
+        <div className="w-full h-full bg-white border border-slate-200 rounded-3xl shadow-[0_20px_40px_rgba(0,0,0,0.03)] p-0 overflow-hidden flex flex-col">
+          <div className="bg-[#f8f9fc] border-b border-slate-200 p-5 flex justify-between items-center">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Invoice #INV-001</span>
+            <span className="text-xs font-bold px-3 py-1 bg-slate-200/50 text-slate-600 rounded-full">Draft</span>
+          </div>
+          <div className="p-8 space-y-8 flex-1 flex flex-col justify-center">
+            <div className="flex justify-between">
+              <div className="space-y-3">
+                <div className="h-3 w-20 bg-slate-200 rounded"></div>
+                <div className="h-3 w-32 bg-slate-100 rounded"></div>
+              </div>
+            </div>
+            <div className="border border-slate-200 rounded-xl overflow-hidden">
+              <div className="bg-[#f8f9fc] p-4 border-b border-slate-200 flex justify-between">
+                <span className="text-xs font-semibold text-slate-500">Item Description</span>
+                <span className="text-xs font-semibold text-slate-500">Amount</span>
+              </div>
+              <div className="p-4 flex justify-between items-center bg-white">
+                <span className="text-sm font-semibold text-slate-900">Web Dashboard Design</span>
+                <span className="text-sm font-black text-slate-900">$4,500</span>
+              </div>
+            </div>
+            <div className="flex justify-end pt-4">
+              <span className="text-3xl font-black tracking-tighter text-slate-900">$4,500.00</span>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Send and track instantly.",
+      description: "Deliver your invoice securely via email or generate a private link to share in WhatsApp or Slack. See when your client views it.",
+      action: "See tracking options",
+      visual: (
+        <div className="w-full h-full bg-white border border-slate-200 rounded-3xl shadow-[0_20px_40px_rgba(0,0,0,0.03)] p-8 sm:p-12 flex flex-col justify-center items-center bg-[radial-gradient(#f1f5f9_1px,transparent_1px)] [background-size:16px_16px]">
+          <motion.div
+            initial={{ scale: 0.95 }}
+            animate={{ scale: 1 }}
+            className="bg-white border text-center border-slate-200 rounded-2xl shadow-xl p-8 w-full max-w-sm"
+          >
+            <div className="mx-auto h-16 w-16 bg-[#ebf5ff] text-blue-600 rounded-full flex items-center justify-center mb-6">
+              <Send className="h-6 w-6 ml-1" />
+            </div>
+            <h4 className="text-xl font-black tracking-tight text-slate-900 mb-2">Invoice Dispatched!</h4>
+            <p className="text-sm text-slate-500 mb-8 font-medium">client@acmefinance.com</p>
+            <div className="h-12 w-full bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-center">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                Viewed 2 mins ago
+              </span>
+            </div>
           </motion.div>
         </div>
-
-        {/* 2-Column Grid for larger cards */}
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-12 mx-auto w-full">
-
-          {/* Step 1: Create */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="group relative flex flex-col rounded-[2rem] bg-[#0F0F0F] border border-white/[0.08] p-6 lg:p-10 hover:border-blue-500/30 hover:shadow-[0_0_40px_rgba(59,130,246,0.1)] transition-all duration-500 z-10"
-          >
-            {/* Background Hover Glow */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-[2rem] pointer-events-none -z-10"></div>
-
-            {/* Text Header */}
-            <div className="mb-8">
-              <h3 className="text-xl font-medium text-white mb-2">Craft your invoice</h3>
-              <p className="text-sm text-white/50 leading-relaxed font-normal">
-                Use our lightning-fast, keyboard-friendly editor. Pull from saved clients and items to draft invoices instantly.
-              </p>
+      )
+    },
+    {
+      title: "Automate your receipts.",
+      description: "The absolute moment an invoice is marked paid, Billio automatically generates and dispatches a branded, compliant receipt.",
+      action: "Start getting paid",
+      visual: (
+        <div className="w-full h-full bg-white border border-slate-200 rounded-3xl shadow-[0_20px_40px_rgba(0,0,0,0.03)] overflow-hidden flex flex-col">
+          <div className="bg-[#ecfdf5] border-b border-[#d1fae5] py-10 flex flex-col items-center justify-center text-center">
+            <div className="h-14 w-14 bg-white shadow-sm text-emerald-600 rounded-full flex items-center justify-center mb-4 border border-emerald-100">
+              <Receipt className="h-6 w-6" />
             </div>
+            <h4 className="text-emerald-900 font-black text-xl tracking-tight">Payment Successful</h4>
+            <p className="text-emerald-600/80 text-sm font-medium mt-1">Receipt #REC-001</p>
+          </div>
+          <div className="p-10 bg-white space-y-6 flex-1 flex flex-col justify-center max-w-sm mx-auto w-full">
+            <div className="flex justify-between items-center border-b border-slate-100 pb-4">
+              <span className="text-slate-500 text-sm font-medium">Amount Paid</span>
+              <span className="text-slate-900 font-black text-xl tracking-tighter">$4,500.00</span>
+            </div>
+            <div className="flex justify-between items-center border-b border-slate-100 pb-4">
+              <span className="text-slate-500 text-sm font-medium">Date Paid</span>
+              <span className="text-slate-900 font-semibold text-sm">Today, 2:40 PM</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-slate-500 text-sm font-medium">Method</span>
+              <span className="text-slate-900 font-semibold text-sm">Card ending in 4242</span>
+            </div>
+          </div>
+        </div>
+      )
+    }
+  ];
 
-            {/* Visual Bottom */}
-            <div className="flex-1 rounded-2xl bg-[#050505] border border-white/[0.04] p-6 sm:p-8 flex flex-col justify-center min-h-[320px] relative overflow-hidden group-hover:border-white/10 transition-colors duration-500">
-              {/* Decorative Ambient Orb */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-blue-500/20 rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+  return (
+    <section id="how-it-works" className="w-full bg-white font-sans py-24 md:py-32 overflow-hidden border-t border-slate-100">
+      <div className="max-w-[1200px] mx-auto px-6 lg:px-12">
 
-              {/* Minimal Form Mockup */}
-              <div className="bg-[#111111] border border-white/10 rounded-xl p-5 shadow-2xl relative z-10 w-full transform group-hover:scale-105 group-hover:-translate-y-4 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
-                <div className="mb-3">
-                  <div className="text-[10px] text-white/40 mb-1.5">Client Name</div>
-                  <div className="bg-black/50 border border-white/5 rounded-md px-3 py-2 text-xs text-white/80">Acme Corp Inc.</div>
-                </div>
-                <div>
-                  <div className="text-[10px] text-white/40 mb-1.5">Line Items</div>
-                  <div className="bg-black/50 border border-white/5 rounded-md px-3 py-2 flex justify-between items-center text-xs">
-                    <span className="text-white/80">Web Development</span>
-                    <span className="text-white/50">$2,500</span>
-                  </div>
-                </div>
+        {/* Header Block */}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-6xl font-black tracking-tight text-slate-900 mb-6 font-sans">
+            How it works.
+          </h2>
+          <p className="text-lg md:text-xl text-slate-800 max-w-3xl mx-auto font-medium leading-relaxed" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif' }}>
+            A truly frictionless five-step workflow built to take your freelance or agency business from onboarding to getting paid instantly.
+          </p>
+        </div>
+
+        {/* Tab Pills */}
+        <div className="flex flex-wrap justify-center gap-2 md:gap-3 lg:gap-0 lg:justify-start lg:border lg:border-slate-200 lg:rounded-full lg:p-1.5 w-fit mx-auto lg:mx-0 mb-16 md:mb-24 shadow-sm bg-white">
+          {tabs.map((tab, idx) => (
+            <button
+              key={idx}
+              onClick={() => setActiveTab(idx)}
+              className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all ${activeTab === idx
+                  ? "bg-[#0e0f2b] text-white shadow-md transform scale-105"
+                  : "bg-transparent text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Active Content Body */}
+        <div className="relative">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center"
+            >
+              {/* Left Side: Text Details */}
+              <div className="flex flex-col relative">
+                {/* Decorative left line */}
+                <div className="absolute left-[-32px] md:left-[-48px] top-0 bottom-0 w-px bg-slate-200 hidden lg:block"></div>
+
+                <h3 className="text-3xl md:text-[2.5rem] font-bold text-slate-900 mb-6 leading-[1.1] tracking-tight">
+                  {steps[activeTab].title}
+                </h3>
+                <p className="text-lg text-slate-600 leading-relaxed mb-10 font-medium">
+                  {steps[activeTab].description}
+                </p>
+                <a href="#" className="inline-flex items-center text-[15px] font-bold text-[#0e0f2b] hover:text-blue-600 transition-colors group w-fit">
+                  {steps[activeTab].action}
+                  <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </a>
               </div>
 
-              {/* Decorative Gradient */}
-              <div className="absolute w-full h-1/2 bottom-0 left-0 bg-gradient-to-t from-[#050505] to-transparent pointer-events-none z-20"></div>
-            </div>
-          </motion.div>
-
-          {/* Step 2: Send */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="group relative flex flex-col rounded-[2rem] bg-[#0F0F0F] border border-white/[0.08] p-6 lg:p-10 hover:border-emerald-500/30 hover:shadow-[0_0_40px_rgba(16,185,129,0.1)] transition-all duration-500 z-10"
-          >
-            {/* Background Hover Glow */}
-            <div className="absolute inset-0 bg-gradient-to-bl from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-[2rem] pointer-events-none -z-10"></div>
-
-            {/* Text Header */}
-            <div className="mb-8">
-              <h3 className="text-xl font-medium text-white mb-2">Send securely</h3>
-              <p className="text-sm text-white/50 leading-relaxed font-normal">
-                Deliver via email, WhatsApp, or unique secure links. See exactly when your client views the invoice.
-              </p>
-            </div>
-
-            {/* Visual Bottom */}
-            <div className="flex-1 rounded-2xl bg-[#050505] border border-white/[0.04] p-6 sm:p-8 flex flex-col justify-center items-center min-h-[320px] relative overflow-hidden group-hover:border-white/10 transition-colors duration-500">
-
-              {/* Decorative Ambient Orb */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-500/20 rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
-
-              {/* Message Bubble Mockup */}
-              <div className="w-full flex flex-col gap-3 relative z-10 transform group-hover:scale-[1.05] group-hover:-translate-y-4 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
-                <div className="bg-[#1A1A1A] border border-white/10 rounded-2xl rounded-tl-sm p-5 w-[85%] self-end shadow-2xl">
-                  <div className="text-[10px] text-white/40 mb-2">10:42 AM</div>
-                  <div className="text-xs text-white/80 leading-relaxed text-left">
-                    Hi there! Your invoice for $2,500 is ready. You can view and pay it securely here: <br /><span className="text-blue-400 mt-1 inline-block bg-blue-500/10 px-2 py-0.5 rounded">bll.io/inv-2</span>
-                  </div>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex gap-2 self-end pr-2">
-                  <div className="bg-[#111] border border-white/10 text-white/60 text-[10px] px-3 py-1.5 rounded-full flex items-center justify-center">
-                    Copy Link
-                  </div>
-                  <div className="bg-white text-black font-semibold text-[10px] px-3 py-1.5 rounded-full flex items-center justify-center">
-                    Send Email
-                  </div>
-                </div>
+              {/* Right Side: Visual Mockup */}
+              <div className="h-[400px] sm:h-[480px] w-full relative">
+                {steps[activeTab].visual}
               </div>
-              {/* Decorative Gradient */}
-              <div className="absolute w-full h-1/2 bottom-0 left-0 bg-gradient-to-t from-[#050505] to-transparent pointer-events-none z-20"></div>
-            </div>
-          </motion.div>
-
-          {/* Step 3: Get Paid - Spans 2 columns */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="group relative flex flex-col lg:flex-row md:col-span-2 rounded-[2rem] bg-[#0F0F0F] border border-white/[0.08] p-6 lg:p-12 hover:border-amber-500/30 hover:shadow-[0_0_40px_rgba(245,158,11,0.1)] transition-all duration-500 gap-12 lg:items-center z-10"
-          >
-            {/* Background Hover Glow */}
-            <div className="absolute inset-0 bg-gradient-to-t from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-[2rem] pointer-events-none -z-10"></div>
-
-            {/* Text Header (Left Side) */}
-            <div className="flex-1">
-              <h3 className="text-2xl font-medium text-white mb-4">Get paid instantly</h3>
-              <p className="text-base text-white/50 leading-relaxed font-normal max-w-sm">
-                Accept major credit cards, bank transfers, and Apple Pay directly on your invoice page. Funds clear directly to your bank account with lightning speed.
-              </p>
-            </div>
-
-            {/* Visual Bottom (Right Side) */}
-            <div className="flex-1 w-full rounded-2xl bg-[#050505] border border-white/[0.04] p-8 flex flex-col justify-center items-center min-h-[360px] relative overflow-hidden group-hover:border-white/10 transition-all duration-500">
-
-              {/* Decorative Ambient Orb */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-amber-500/10 rounded-full blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
-
-              {/* Payment Methods Mockup */}
-              <div className="w-full max-w-sm space-y-4 relative z-10 transform group-hover:scale-105 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
-                <div className="bg-white text-black rounded-xl h-12 w-full flex items-center justify-center gap-2 shadow-2xl group-hover:-translate-y-2 transition-transform duration-700 delay-75">
-                  <Apple className="h-5 w-5 fill-black" />
-                  <span className="font-bold">Pay</span>
-                </div>
-                <div className="bg-[#1A1A1A] border border-white/10 rounded-xl h-12 w-full flex items-center justify-between px-5 group-hover:-translate-y-1 transition-transform duration-700 delay-150">
-                  <span className="text-[10px] xl:text-xs text-white/60 font-medium tracking-wide">•••• •••• •••• 4242</span>
-                  <div className="flex gap-1 opacity-50">
-                    <div className="w-5 h-3 bg-white/20 rounded-sm"></div>
-                    <div className="w-5 h-3 bg-white/20 rounded-sm"></div>
-                  </div>
-                </div>
-
-                {/* Success State Overlay */}
-                <div className="absolute inset-0 flex flex-col justify-end items-center pb-2 pointer-events-none">
-                  <div className="bg-[#111] border border-white/20 px-5 py-3 rounded-full shadow-[0_20px_40px_rgba(0,0,0,0.5)] flex items-center gap-2 transform translate-y-8 opacity-0 group-hover:translate-y-2 group-hover:opacity-100 transition-all duration-500 delay-300">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-                    <span className="text-xs font-bold text-white pr-2">Payment successful</span>
-                  </div>
-                </div>
-              </div>
-              {/* Decorative Gradient */}
-              <div className="absolute w-full h-1/2 bottom-0 left-0 bg-gradient-to-t from-[#050505] to-transparent pointer-events-none z-20"></div>
-            </div>
-          </motion.div>
-
+            </motion.div>
+          </AnimatePresence>
         </div>
 
       </div>

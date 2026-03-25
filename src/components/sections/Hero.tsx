@@ -42,10 +42,10 @@ export default function Hero() {
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                            className="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-[3rem] xl:text-[3.25rem] font-bold text-slate-900 leading-[1.05] tracking-tight"
+                            className="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-[3.25rem] xl:text-[3.5rem] font-bold text-slate-900 leading-[1.1] tracking-tight"
                             style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif' }}
                         >
-                            Create invoices, track payments,<br className="hidden md:block" /> and manage your business<br className="hidden md:block" /> in one place.
+                            Create invoices, track payments, and manage<br className="hidden lg:block" /> your business in one place.<br className="hidden lg:block" />
                         </motion.h1>
                     </div>
                     <div className="lg:max-w-md w-full">

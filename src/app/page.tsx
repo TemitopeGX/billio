@@ -3,6 +3,7 @@ import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 
 import Features from "@/components/sections/Features";
+import WhoItsFor from "@/components/sections/WhoItsFor";
 
 import HowItWorks from "@/components/sections/HowItWorks";
 import Testimonials from "@/components/sections/Testimonials";
@@ -18,7 +19,8 @@ export default function HomePage() {
       <Hero />
       <About />
       <Features />
- 
+      <WhoItsFor />
+
       <HowItWorks />
       <Testimonials />
       <Pricing />

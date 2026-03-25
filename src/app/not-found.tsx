@@ -31,7 +31,7 @@ export default function NotFound() {
                     <div className="flex justify-center lg:justify-end order-1">
                         <div className="relative w-full max-w-[350px] sm:max-w-[450px] lg:max-w-[600px] aspect-square">
                             <Image
-                                src="/404-character.png"
+                                src="/404-character.webp"
                                 alt="Confused cute monster holding a map"
                                 fill
                                 className="object-contain drop-shadow-2xl"
